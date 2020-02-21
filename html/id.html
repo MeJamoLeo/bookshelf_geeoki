@@ -21,64 +21,84 @@
   <body>
     <!-- Navbar goes here -->
     <div class="wrapper-nav blue">
-      <div class="row">
+      <div class="row nav-row">
         <div class="col s2 white-text center nav-right">
           <p class="nav-logo">ブックス</p>
         </div>
-        <div class="col s5 offset-s2 nav-middle center">
+        <div class="col s7 m5 offset-m1 nav-middle center">
           <div class="search-left">
             <input type="search" />
           </div>
-          <div class="search-right">
-            <a class="btn-floating btn waves-effect waves-light"
-              ><i class="material-icons">search</i></a
-            >
-          </div>
+        </div>
+        <div class="col s1 search-right">
+          <a class="btn-floating btn waves-effect waves-light"
+            ><i class="material-icons">search</i></a
+          >
         </div>
       </div>
     </div>
 
     <div class="container">
       <div class="book-info">
-        <div class="row">
-          <div class="col l2 offset-l1 m3 s2">
-            <div class="info-img">
-              <img
-                src="
-            http://books.google.com/books/content?id=DioBrgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
-                alt=""
-              />
-            </div>
+        <div class="row" style="position: relative;">
+          <div class="col l2 offset-l1 m3 s12 info-img">
+            <img
+              src="http://books.google.com/books/content?id=DioBrgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+              alt=""
+            />
           </div>
-          <div class="col l6 offset-l1 m6 offset-m1 s2">
-            <div class="info-text">
-              <h2>夢を叶えるゾウ</h2>
-              <h3>水野敬也</h3>
-              <p>
-                「お前なぁ、このままやと2000%成功でけへんで」ダメダメなサラリーマンの前に突然現れた関西弁を喋るゾウの姿をした神様“ガネーシャ”。成功するために教えられたことは「靴をみがく」とか「コンビニで募金する」とか地味なものばかりで…。ベストセラー『ウケる技術』の著者が贈る、愛と笑いのファンタジー小説。
-              </p>
-              <div class="card-tags">
-                <a href="">
-                  <div class="chip">
-                    Tag
-                  </div>
+          <div class="col l6 offset-l1 m6 offset-m1 s12 info-text">
+            <h2>夢を叶えるゾウ</h2>
+            <h3>水野敬也</h3>
+            <p>
+              「お前なぁ、このままやと2000%成功でけへんで」ダメダメなサラリーマンの前に突然現れた関西弁を喋るゾウの姿をした神様“ガネーシャ”。成功するために教えられたことは「靴をみがく」とか「コンビニで募金する」とか地味なものばかりで…。ベストセラー『ウケる技術』の著者が贈る、愛と笑いのファンタジー小説。
+            </p>
+            <div class="card-tags">
+              <a href="">
+                <div class="chip">
+                  Tag
+                </div>
+              </a>
+              <a href="">
+                <div class="chip">
+                  ビジネス
+                </div>
+              </a>
+              <a href="">
+                <div class="chip">
+                  ゾウ
+                </div>
+              </a>
+            </div>
+            <div class="info-owner row">
+              <div class="col s12 owner-icon">
+                <img
+                  src="images/yuna.jpg"
+                  alt=""
+                  class="circle responsive-img"
+                />
+                <a
+                  href=""
+                  style="font-size: 1.5rem
+                ;vertical-align:middle;"
+                  class="align-wrapper"
+                  >ffffff
                 </a>
-                <a href="">
-                  <div class="chip">
-                    ビジネス
-                  </div>
-                </a>
-                <a href="">
-                  <div class="chip">
-                    ゾウ
-                  </div>
-                </a>
+              </div>
+              <div class="col s12 book-status">
+                <div class="right-align">
+                  <a href="" class="btn"
+                    >リクエスト<i class="material-icons">send</i>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="container"></div>
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>

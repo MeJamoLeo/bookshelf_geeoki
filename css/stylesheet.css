@@ -4,6 +4,14 @@ html {
   height: 100%;
 }
 
+.wrapper-nav {
+  height: 6rem;
+}
+
+.nav-row {
+  padding-top: 1rem;
+}
+
 .wrapper-left {
   height: 100vh;
 }
@@ -64,4 +72,18 @@ input {
 
 .book-info {
   margin-top: 5rem;
+}
+
+.info-img {
+  margin: 0 auto;
+  margin-top: 4rem;
+}
+
+.info-owner {
+  padding-top: 4rem;
+}
+
+.info-owner img {
+  height: 5rem;
+  width: auto;
 }
