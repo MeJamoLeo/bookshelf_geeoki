@@ -1,0 +1,63 @@
+html {
+  /* ルートのフォントサイズを10pxに設定しておく */
+  font-size: 62.5%;
+  height: 100%;
+}
+
+.wrapper-left {
+  height: 100vh;
+}
+
+.title-text {
+  font-size: 5rem;
+  margin: 30% auto;
+}
+
+.wrapper-right {
+  height: 100vh;
+}
+
+.row {
+  margin-bottom: 0px;
+}
+
+.login {
+  margin: 30% auto;
+}
+
+.login h2 {
+  font-size: 3rem;
+}
+
+input {
+  display: inline-block;
+}
+
+.search-box {
+  border-radius: 50px;
+}
+
+.nav-middle {
+  float: left;
+}
+
+.search-left,
+.search-right {
+  display: inline-block;
+}
+
+.search-left {
+  width: 80%;
+}
+
+.search-right {
+  margin-left: 2rem;
+}
+
+.card-title {
+  font-size: 2rem;
+}
+
+.card-tags {
+  margin-bottom: 1rem;
+}
