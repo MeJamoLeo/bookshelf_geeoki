@@ -87,3 +87,12 @@ input {
   height: 5rem;
   width: auto;
 }
+
+.mypage-img {
+  margin: 4rem 0rem;
+}
+
+.chip {
+  width: auto;
+  font-size: 1rem;
+}
