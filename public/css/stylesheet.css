@@ -1,6 +1,6 @@
 html {
   /* ルートのフォントサイズを10pxに設定しておく */
-  font-size: 62.5%;
+  font-size: 60.5%;
   height: 100%;
 }
 
@@ -13,7 +13,7 @@ html {
 }
 
 .wrapper-left {
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .title-text {
