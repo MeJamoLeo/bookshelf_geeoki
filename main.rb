@@ -4,12 +4,13 @@ require 'active_record'
 require 'pry'
 require 'pg'
 
-
+def db
 client = PG::connect(
   :host => "localhost",
   :user => 'leo',
   :password => '',
   :dbname => "library_geek")
+end
 
 # トップページ
 get '/login' do
@@ -17,13 +18,7 @@ get '/login' do
   return erb :login
 end
 
-post '/login' do
-  @email = params[:email]
-  @password = params[:password]
 
-  if
-  redirect '/books'
-end
 
 
 get '/books' do
@@ -42,21 +37,24 @@ end
 get '/users' do
   sql = "select * from users;"
   @users = db.exec_params(sql).to_a
-  # @users の戻り値のサンプル
-  # [
-  #   {
-  #     "id" => "1",
-  #     "name" => "kinjo",
-  #     "email" => "kinjo@mail.com",
-  #     "password" => "kinjo"
-  #   },
-  #   {
-  #     "id" => "2",
-  #     "name" => "higa",
-  #     "email" => "higa@mail.com",
-  #     "password" => "higa"
-  #   }
-  # ]
+  erb :users
+end
+
+# ----------------------------------------------------
+
+get '/users/:id' do
+  id = params[:id]
+  sql = "select * from users where id = #{id};"
+  users = db.exec_params(sql).to_a
+  @user = users[0]
+  # binding.pry
+  # @user の戻り値のサンプル
+  # {
+  #   "id" => "1",
+  #   "name" => "kinjo",
+  #   "email" => "kinjo@mail.com",
+  #   "password" => "kinjo"
+  # }
 
   erb :users
 end
