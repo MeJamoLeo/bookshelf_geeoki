@@ -1,0 +1,7 @@
+development:
+  adapter: postgresql
+  database: library_geek
+  host: localhost
+  username: leo
+  password:
+  encoding: utf8
