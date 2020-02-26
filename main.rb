@@ -7,30 +7,10 @@ require 'active_record'
 require 'pry'
 require 'pg'
 require 'erb'
+require './class'
 
 enable :sessions
 
-ActiveRecord::Base.configurations = YAML.load_file('database.yml')
-ActiveRecord::Base.establish_connection(:development)
-
-class User < ActiveRecord::Base
-end
-
-class Book < ActiveRecord::Base
-end
-
-class History < ActiveRecord::Base
-end
-
-class Tag < ActiveRecord::Base
-end
-
-class Tagmap < ActiveRecord::Base
-end
-class Bookownermap < ActiveRecord::Base
-end
-class Authoermaps < ActiveRecord::Base
-end
 
 # トップページ
 get '/' do
@@ -42,10 +22,9 @@ get '/login' do
 end
 
 post '/login' do
-  user = User.find_by(email: params[:email])
-
-  if user && User.find_by(password: params[:password])
-    binding.pry
+  user = User.find_by(password: params[:password])
+  
+  if user && User.find_by(email: params[:email])
     session[:id] = user[:id]
     redirect '/books'
   else
@@ -55,7 +34,6 @@ end
 
 get '/logout' do
   session.clear unless session[:id].nil?
-  
   redirect '/'
 end
 
@@ -72,55 +50,29 @@ post '/signup' do
   redirect '/login'
 end
 
-get '/books' do
-  binding.pry
-  return redirect '/' unless User.find_by(id: session[:id])
 
-  return erb :books
-end
-
-get '/books/id' do
-  return erb :id
-end
 
 get '/mypage' do
   return erb :mypage
 end
 
-get '/users' do
-  @users = User.all
-  erb :users
+
+get '/books' do
+  redirect '/' unless session[:id]
+  @books = Book.all
+  @authoers = Authoermap.all
+  return erb :books
 end
-
-# ----------------------------------------------------
-
-get '/users/:id' do
-  id = params[:id]
-  sql = "select * from users where id = #{id};"
-  users = db.exec_params(sql).to_a
-  @user = users[0]
-  # binding.pry
-  # @user の戻り値のサンプル
-  # {
-  #   "id" => "1",
-  #   "name" => "kinjo",
-  #   "email" => "kinjo@mail.com",
-  #   "password" => "kinjo"
-  # }
-
-  erb :users
-end
-
-# ----------------------------------------------------
 
 post '/books/new' do
+  redirect '/' unless session[:id]
   @title = params[:title]
   @description = params[:description]
   @thumbnail = params[:thumbnail]
-
+  
   @authoer = params[:authoer]
   @tag = params[:tag]
-
+  
   Book.create(title: @title, description: @description, thumbnail: @thumbnail)
   # セッションで投稿したユーザーのidをゲットしたい
   @user_id = 1
@@ -129,5 +81,18 @@ post '/books/new' do
 end
 
 get '/books/new' do
+  redirect '/' unless session[:id]
   erb :add_book
+end
+
+get '/books/id' do
+  return erb :id
+end
+
+# ----------------------------------------------------　plainフォルダ
+
+get '/plain/books' do
+  @books = Book.all
+  @authoers = Authoermap.all
+  return erb :'plain/books', layout: :none
 end
