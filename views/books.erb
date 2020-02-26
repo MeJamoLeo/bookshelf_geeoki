@@ -1,162 +1,55 @@
   <div class="wrapper-books">
-      <div class="container">
-        <h2>Books List</h2>
-        <div class="row">
-          <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
-            <div
-              class="card-title card-image waves-effect waves-block waves-light"
-            >
-              <img
-                class="activator"
-                src="http://books.google.com/books/content?id=DioBrgEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api"
-              />
-            </div>
-            <div class="card-content">
-              <span class="grey-text text-darken-4">夢を叶えるゾウ</span>
-              <p><a href="#">水野敬也</a></p>
-            </div>
-            <div class="card-tags">
-              <a href="">
-                <div class="chip">
-                  Tag
-                </div>
-              </a>
-              <a href="">
-                <div class="chip">
-                  ビジネス
-                </div>
-              </a>
-              <a href="">
-                <div class="chip">
-                  像
-                </div>
-              </a>
-            </div>
+    <div class="container">
+    <div class="books-title">
+        <h2 style="display:inline-block;">Books List</h2>
+        <a 
+        class="btn-floating btn-large waves-effect waves-light red"
+        style="float: right;
+              margin-top: 3rem;
+              margin-right: 3rem;"
+        href='/books/new'>
+              <i class="material-icons">add</i></a>
+    </div>
+      <div class="row">
+      <% @books.each do |book| %>
+        <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
+          <div
+            class="card-title card-image waves-effect waves-block waves-light"
+          >
+            <img
+              class="activator"
+              src= <%= book.thumbnail %>
+            />
           </div>
-          <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
-            <div
-              class="card-title card-image waves-effect waves-block waves-light"
-            >
-              <img
-                class="activator"
-                src="http://books.google.com/books/content?id=DioBrgEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api"
-              />
-            </div>
-            <div class="card-content">
-              <span class="grey-text text-darken-4">夢を叶えるゾウ</span>
-              <p><a href="#">水野敬也</a></p>
-            </div>
-            <div class="card-tags">
-              <a href="">
-                <div class="chip">
-                  Tag
-                </div>
-              </a>
-              <a href="">
-                <div class="chip">
-                  ビジネス
-                </div>
-              </a>
-              <a href="">
-                <div class="chip">
-                  像
-                </div>
-              </a>
-            </div>
+          <div class="card-content">
+            <span class="grey-text text-darken-4">
+              <%= book.title %>
+            </span>
+              <% @authoers.where(book_id: book.id).each do |authoer|%>
+                <p><a href="#">
+                  <%= authoer.name %>
+              </a></p>
+              <% end %>
           </div>
-          <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
-            <div
-              class="card-title card-image waves-effect waves-block waves-light"
-            >
-              <img
-                class="activator"
-                src="http://books.google.com/books/content?id=DioBrgEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api"
-              />
-            </div>
-            <div class="card-content">
-              <span class="grey-text text-darken-4">夢を叶えるゾウ</span>
-              <p><a href="#">水野敬也</a></p>
-            </div>
-            <div class="card-tags">
-              <a href="">
-                <div class="chip">
-                  Tag
-                </div>
-              </a>
-              <a href="">
-                <div class="chip">
-                  ビジネス
-                </div>
-              </a>
-              <a href="">
-                <div class="chip">
-                  像
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
-            <div
-              class="card-title card-image waves-effect waves-block waves-light"
-            >
-              <img
-                class="activator"
-                src="http://books.google.com/books/content?id=DioBrgEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api"
-              />
-            </div>
-            <div class="card-content">
-              <span class="grey-text text-darken-4">夢を叶えるゾウ</span>
-              <p><a href="#">水野敬也</a></p>
-            </div>
-            <div class="card-tags">
-              <a href="">
-                <div class="chip">
-                  Tag
-                </div>
-              </a>
-              <a href="">
-                <div class="chip">
-                  ビジネス
-                </div>
-              </a>
-              <a href="">
-                <div class="chip">
-                  像
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
-            <div
-              class="card-title card-image waves-effect waves-block waves-light"
-            >
-              <img
-                class="activator"
-                src="http://books.google.com/books/content?id=DioBrgEACAAJ&printsec=frontcover&img=1&zoom=5&source=gbs_api"
-              />
-            </div>
-            <div class="card-content">
-              <span class="grey-text text-darken-4">夢を叶えるゾウ</span>
-              <p><a href="#">水野敬也</a></p>
-            </div>
-            <div class="card-tags">
-              <a href="">
-                <div class="chip">
-                  Tag
-                </div>
-              </a>
-              <a href="">
-                <div class="chip">
-                  ビジネス
-                </div>
-              </a>
-              <a href="">
-                <div class="chip">
-                  像
-                </div>
-              </a>
-            </div>
+          <div class="card-tags">
+            <a href="">
+              <div class="chip">
+                Tag
+              </div>
+            </a>
+            <a href="">
+              <div class="chip">
+                ビジネス
+              </div>
+            </a>
+            <a href="">
+              <div class="chip">
+                像
+              </div>
+            </a>
           </div>
         </div>
+      <% end %>
       </div>
     </div>
+  </div>
