@@ -1,7 +1,23 @@
+<table>
+    <% @books.each do |book| %>
+        <tr>
+            <td><%= book.id %></td>
+            <td><%= book.title %></td>
+            <td><%= book.description %></td>
+            <td><%= book.title%></td>
+            <td>
+            <% @authoers.where(book_id: book.id).each do |authoer|%>
+                <%= authoer.name %>
+            <% end %>
+            </td>
+            <% @tags.each do |tag| %>
+              <% tag.tag_name %>
+            <% end %>
+            <td></td>
+        </tr>
+    <% end %>
+</table>
 
 
 
-<%@books.each do |book|%>
-  <%= book.title%>
-<%end%>
-@
+

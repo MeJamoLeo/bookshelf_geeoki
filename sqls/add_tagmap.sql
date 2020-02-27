@@ -6,7 +6,7 @@ INSERT INTO tagmaps
 VALUES
   (
     1,
-    1
+    3
 );
 
 INSERT INTO tagmaps
@@ -17,7 +17,7 @@ INSERT INTO tagmaps
 VALUES
   (
     2,
-    1
+    3
 );
 
 INSERT INTO tagmaps
@@ -27,8 +27,30 @@ INSERT INTO tagmaps
   )
 VALUES
   (
-    3,
-    1
+    4,
+    4
+);
+
+INSERT INTO tagmaps
+  (
+  book_id,
+  tag_id
+  )
+VALUES
+  (
+    4,
+    6
+);
+
+INSERT INTO tagmaps
+  (
+  book_id,
+  tag_id
+  )
+VALUES
+  (
+    4,
+    8
 );
 
 INSERT INTO tagmaps
@@ -39,6 +61,7 @@ INSERT INTO tagmaps
 VALUES
   (
     5,
-    1
+    5
 );
+
 

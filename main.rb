@@ -11,7 +11,6 @@ require './class'
 
 enable :sessions
 
-
 # トップページ
 get '/' do
   redirect '/login'
@@ -23,7 +22,7 @@ end
 
 post '/login' do
   user = User.find_by(password: params[:password])
-  
+
   if user && User.find_by(email: params[:email])
     session[:id] = user[:id]
     redirect '/books'
@@ -45,12 +44,10 @@ post '/signup' do
   @email = params[:email]
   @password = params[:password]
   @user_name = params[:name]
-  
+
   User.create(email: @email, password: @password, name: @user_name)
   redirect '/login'
 end
-
-
 
 get '/mypage' do
   redirect '/' unless session[:id]
@@ -65,7 +62,6 @@ get '/mypage' do
   return erb :mypage
 end
 
-
 get '/books' do
   redirect '/' unless session[:id]
   @books = Book.all
@@ -78,10 +74,10 @@ post '/books/new' do
   @title = params[:title]
   @description = params[:description]
   @thumbnail = params[:thumbnail]
-  
+
   @authoer = params[:authoer]
   @tag = params[:tag]
-  
+
   Book.create(title: @title, description: @description, thumbnail: @thumbnail)
   # セッションで投稿したユーザーのidをゲットしたい
   @user_id = 1
@@ -108,10 +104,33 @@ end
 
 get '/plain/mypage' do
   redirect '/' unless session[:id]
+  @authoers = Authoermap.all
 
   @user = User.find(session[:id])
   @books = @user.books
+
+  each @books do |book|
+    @tags = book.tags
+  end
+
   binding.pry
 
   return erb :'plain/mypage'
+end
+
+get '/plain/books' do
+  @books = Book.all
+  @authoers = Authoermap.all
+  return erb :'plain/books', layout: :none
+end
+
+get '/plain/tags' do
+  redirect '/' unless session[:id]
+
+  @book = Book.find(1)
+  binding.pry
+  @tags = @book.tags
+  binding.pry
+
+  erb :'plain/tags', layout: :none
 end
