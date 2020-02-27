@@ -55,9 +55,7 @@ get '/mypage' do
   # 多対多の関係をhas_thoroughで表現
   @user = User.find(session[:id])
   @books = @user.books
-
   @authoers = Authoermap.all
-  binding.pry
 
   return erb :mypage
 end
@@ -67,6 +65,11 @@ get '/books' do
   @books = Book.all
   @authoers = Authoermap.all
   return erb :books
+end
+
+get '/books/new' do
+  redirect '/' unless session[:id]
+  erb :add_book
 end
 
 post '/books/new' do
@@ -83,11 +86,6 @@ post '/books/new' do
   @user_id = 1
   Tag.create(tag_name: @tag)
   Authoermap.create
-end
-
-get '/books/new' do
-  redirect '/' unless session[:id]
-  erb :add_book
 end
 
 get '/books/id' do
