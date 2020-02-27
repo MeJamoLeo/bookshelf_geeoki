@@ -31,22 +31,13 @@
               <% end %>
               </a></p>
           </div>
-          <div class="card-tags">
-            <a href="">
-              <div class="chip">
-                Tag
+          <div class="card-tags" style="font-size: 2rem;">
+            <% book.tags.each do |tag| %>
+            <a href="" style="position: relative;">
+              <div class="chip" style="">
+                <%= tag.tag_name %>
               </div>
-            </a>
-            <a href="">
-              <div class="chip">
-                ビジネス
-              </div>
-            </a>
-            <a href="">
-              <div class="chip">
-                像
-              </div>
-            </a>
+            <% end %>
           </div>
         </div>
       <% end %>
