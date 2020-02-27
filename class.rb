@@ -2,13 +2,20 @@ ActiveRecord::Base.configurations = YAML.load_file('database.yml')
 ActiveRecord::Base.establish_connection(:development)
 
 class User < ActiveRecord::Base
-  # has_many :bookownermap
+  has_many :bookownermaps
+  has_many :books, :through => :bookownermaps
   # has_many :historie
   # has_many :tag
 end
 
+class Bookownermap < ActiveRecord::Base
+  belongs_to :user
+  belongs_to :book
+end
+
 class Book < ActiveRecord::Base
-  # has_many :bookownermap
+  has_many :bookownermaps
+  has_many :users, :through => :bookownermaps
   # has_many :authoermap
   # has_many :tagmap
   # has_many :historie
@@ -33,7 +40,3 @@ class Tagmap < ActiveRecord::Base
   # belongs_to :tag
 end
 
-class Bookownermap < ActiveRecord::Base
-  # belongs_to :user
-  # belongs_to :book
-end

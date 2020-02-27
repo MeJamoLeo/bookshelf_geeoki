@@ -96,3 +96,13 @@ get '/plain/books' do
   @authoers = Authoermap.all
   return erb :'plain/books', layout: :none
 end
+
+get '/plain/mypage' do
+  redirect '/' unless session[:id]
+
+  @user = User.find(session[:id])
+  @books = @user.books
+  binding.pry
+
+  return erb :'plain/mypage'
+end
