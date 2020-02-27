@@ -1,19 +1,24 @@
+<div class="container">
 <form action="/books/new" method="post">
   <label for="title">title</label>
-  <input type="title" name="title" id="title" />
+  <input type="text" name="title" id="title" />
   <label for="authoer">authoer_name</label>
-  <input type="authoer" name="authoer" id="authoer" />
+  <input type="text" name="authoer" id="authoer" />
   <label for="desctiption">desctiption</label>
-  <input type="desctiption" name="desctiption" id="desctiption" />
+  <input type="text" name="desctiption" id="desctiption" />
   <label for="thumbnail">thumbnail</label>
-  <input type="thumbnail" name="thumbnail" id="thumbnail" />
-  <label for="tag">tag_name</label>
-  <input type="tag" name="tag" id="tag" />
+
+  <input type="file" name="file">
+  <br>
+  <br>
+  <label for="tag">tag_name （,で区切ってください）</label>
+  <input type="text" name="tag" id="tag" />
   <label for="isbn">isbn</label>
-  <input type="isbn" name="isbn" id="isbn" />
+  <input type="number" name="isbn" id="isbn" />
 
 
   <button class="btn waves-effect waves-light" type="submit" name="action">Submit
     <i class="material-icons right">send</i>
   </button>
 </form>
+</div>

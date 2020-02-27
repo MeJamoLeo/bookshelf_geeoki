@@ -74,18 +74,25 @@ end
 
 post '/books/new' do
   redirect '/' unless session[:id]
-  @title = params[:title]
-  @description = params[:description]
-  @thumbnail = params[:thumbnail]
 
-  @authoer = params[:authoer]
-  @tag = params[:tag]
+  user_id = session[:id]
 
-  Book.create(title: @title, description: @description, thumbnail: @thumbnail)
-  # セッションで投稿したユーザーのidをゲットしたい
-  @user_id = 1
-  Tag.create(tag_name: @tag)
-  Authoermap.create
+  title =       params[:title]
+  description = params[:description]
+  thumbnail =   params[:thumbnail]
+  isbn =        params[:isbn]
+  authoer =     params[:authoer]
+  tags =        params[:tag].split(",").to_a
+
+
+  new_book = Book.create(title: title, description: description, thumbnail: thumbnail, isbn: isbn)
+  Authoermap.create(name: name)
+  Bookownermap.create(user_id: user_id, book_id: new_book.id)
+
+  tags.each do |tag|
+    new_tag = Tag.create(tag_name: tag, user_id: user_id)
+    Tagmap.create(book_id: new_book.id, tag_id: new_tag.id)
+  end
 end
 
 get '/books/id' do
