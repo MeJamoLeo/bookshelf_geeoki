@@ -53,6 +53,15 @@ end
 
 
 get '/mypage' do
+  redirect '/' unless session[:id]
+
+  # 多対多の関係をhas_thoroughで表現
+  @user = User.find(session[:id])
+  @books = @user.books
+
+  @authoers = Authoermap.all
+  binding.pry
+
   return erb :mypage
 end
 

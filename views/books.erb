@@ -25,11 +25,11 @@
             <span class="grey-text text-darken-4">
               <%= book.title %>
             </span>
-              <% @authoers.where(book_id: book.id).each do |authoer|%>
                 <p><a href="#">
+              <% @authoers.where(book_id: book.id).each do |authoer|%>
                   <%= authoer.name %>
-              </a></p>
               <% end %>
+              </a></p>
           </div>
           <div class="card-tags">
             <a href="">
