@@ -8,6 +8,7 @@ require 'pry'
 require 'pg'
 require 'erb'
 require './class'
+require 'function'
 
 enable :sessions
 
@@ -76,18 +77,22 @@ post '/books/new' do
   redirect '/' unless session[:id]
 
   user_id = session[:id]
+  isbn = params[:isbn]
 
-  title =       params[:title]
-  description = params[:description]
-  thumbnail =   params[:thumbnail]
-  isbn =        params[:isbn]
-  authoer =     params[:authoer]
-  tags =        params[:tag].split(",").to_a
+  book_info = get_book_info(isbn)
 
+  title = book_info[:title]
+  description = book_info[:description]
+  thumbnail = book_info[:thumbnail]
+  authoer_name = book_info[:authoers]
 
-  new_book = Book.create(title: title, description: description, thumbnail: thumbnail, isbn: isbn)
-  Authoermap.create(name: name)
+  tags = params[:tag].split(",").to_a
+
+  new_book = Book.create(title: title, description: description, thumbnail: thumbnail, isbn: isbn, id: 6)
+  binding.pry
+  Authoermap.create(name: authoer_name)
   Bookownermap.create(user_id: user_id, book_id: new_book.id)
+
 
   tags.each do |tag|
     new_tag = Tag.create(tag_name: tag, user_id: user_id)
