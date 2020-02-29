@@ -8,7 +8,7 @@ require 'pry'
 require 'pg'
 require 'erb'
 require './class'
-require 'function'
+require './function'
 
 enable :sessions
 
@@ -84,13 +84,14 @@ post '/books/new' do
   title = book_info[:title]
   description = book_info[:description]
   thumbnail = book_info[:thumbnail]
-  authoer_name = book_info[:authoers]
+  authoer_names = book_info[:authoers]
 
   tags = params[:tag].split(",").to_a
 
-  new_book = Book.create(title: title, description: description, thumbnail: thumbnail, isbn: isbn, id: 6)
-  binding.pry
-  Authoermap.create(name: authoer_name)
+  new_book = Book.create(title: title, description: description, thumbnail: thumbnail, isbn: isbn)
+  authoer_names.each do |authoer_name|
+    Authoermap.create(name: authoer_name.to_s, book_id: new_book.id)
+  end
   Bookownermap.create(user_id: user_id, book_id: new_book.id)
 
 
@@ -98,6 +99,8 @@ post '/books/new' do
     new_tag = Tag.create(tag_name: tag, user_id: user_id)
     Tagmap.create(book_id: new_book.id, tag_id: new_tag.id)
   end
+
+  redirect '/books'
 end
 
 get '/books/id' do
@@ -120,10 +123,9 @@ get '/plain/mypage' do
   @books = @user.books
 
   each @books do |book|
-    @tags = book.tags
+  @tags = book.tags
   end
 
-  binding.pry
 
   return erb :'plain/mypage'
 end
@@ -138,9 +140,7 @@ get '/plain/tags' do
   redirect '/' unless session[:id]
 
   @book = Book.find(1)
-  binding.pry
   @tags = @book.tags
-  binding.pry
 
   erb :'plain/tags', layout: :none
 end

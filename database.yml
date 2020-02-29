@@ -1,6 +1,6 @@
 development:
   adapter: postgresql
-  database: library_geek
+  database: lib_geek2
   host: localhost
   username: leo
   password:

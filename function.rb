@@ -2,6 +2,7 @@ def get_book_info(isbn)
 require 'net/http'
 require 'uri'
 require 'json'
+require 'pry'
 
 goole_books_url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'
 
@@ -22,7 +23,3 @@ book_info = result.dig("items", 0, "volumeInfo")
 
 
 end
-
-
-isbn = 9784873117836
-puts get_book_info(isbn)
