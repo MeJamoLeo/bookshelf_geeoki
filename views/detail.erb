@@ -3,33 +3,25 @@
         <div class="row" style="position: relative;">
           <div class="col l2 offset-l1 m3 s12 info-img">
             <img
-              src="http://books.google.com/books/content?id=DioBrgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"
+              src= <%= @book.thumbnail %>
               alt=""
             />
           </div>
           <div class="col l6 offset-l1 m6 offset-m1 s12 info-text">
-            <h2>夢を叶えるゾウ</h2>
-            <h3>水野敬也</h3>
-            <p>
-              「お前なぁ、このままやと2000%成功でけへんで」ダメダメなサラリーマンの前に突然現れた関西弁を喋るゾウの姿をした神様“ガネーシャ”。成功するために教えられたことは「靴をみがく」とか「コンビニで募金する」とか地味なものばかりで…。ベストセラー『ウケる技術』の著者が贈る、愛と笑いのファンタジー小説。
-            </p>
-            <div class="card-tags">
-              <a href="">
-                <div class="chip">
-                  Tag
-                </div>
-              </a>
-              <a href="">
-                <div class="chip">
-                  ビジネス
-                </div>
-              </a>
-              <a href="">
-                <div class="chip">
-                  ゾウ
-                </div>
-              </a>
-            </div>
+            <h2><%= @book.title %></h2>
+            <h3><%= @book.authoer %></h3>
+            <p><%= @book.description %></p>
+
+          <%# タグをパーツとして使いたい %>
+          <div class="card-tags" style="font-size: 2rem;">
+            <% @book.tags.each do |tag| %>
+            <a href="" style="position: relative;">
+              <div class="chip" style="">
+                <%= tag.tag_name %>
+              </div>
+            <% end %>
+          </div>
+          <%# ---------------------------------------------------- %>
             <div class="info-owner row">
               <div class="col s12  owner-icon">
                 <img
@@ -43,7 +35,7 @@
                   style="font-size: 1.5rem
                 ;vertical-align:middle;"
                   class="align-wrapper"
-                  >@ponponponta
+                  ><%= @user.name %>
                 </a>
               </div>
               <div class="col s12 book-status">

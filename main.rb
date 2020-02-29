@@ -103,8 +103,12 @@ post '/books/new' do
   redirect '/books'
 end
 
-get '/books/id' do
-  return erb :id
+get '/books/:id' do
+  redirect '/' unless session[:id]
+  @book = Book.find(params[:id])
+  @tags = @book.tags
+  @user = User.find(session[:id])
+  return erb :detail
 end
 
 # ----------------------------------------------------　plainフォルダ
