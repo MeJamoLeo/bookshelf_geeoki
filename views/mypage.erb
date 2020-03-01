@@ -16,16 +16,19 @@
     <div class="col s12">
       <ul class="tabs">
         <li class="tab col s3">
-          <a class="active" href="#mybooks">My books</a>
+          <a class="active" href="#mybooks">マイブック</a>
         </li>
+        <%# 借りた本 %>
         <li class="tab col s3">
-          <a class="" href="#borrow">borrow</a>
+          <a class="" href="#borrow">借りている本</a>
         </li>
+        <%# 貸した本 %>
         <li class="tab col s3">
-          <a href="#lend">lend</a>
+          <a href="#lend">貸している本</a>
         </li>
+        <%# 貸してくれリクエスト %>
         <li class="tab col s3">
-          <a href="#request">request</a>
+          <a href="#request">リクエスト承認待ち</a>
         </li>
     </div>
 
@@ -37,7 +40,7 @@
     <%# mybooks tab ----------------------------------------------------　%>
     <div id="mybooks" class="col s12">
       <div class="row">
-        <% @books.each do |book| %>
+        <% @my_books.each do |book| %>
         <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
           <div class="card-title card-image waves-effect waves-block waves-light">
             <img class="activator" src=<%= book.thumbnail %> />
@@ -72,33 +75,32 @@
     <%# borrow tab ---------------------------------------------------- %>
     <div id="borrow" class="col s12">
       <div class="row">
+        <% @book_borrowed_logs.each do |book_borrowed_log| %>
+          <% book = Book.find(book_borrowed_log.book_id) %>
         <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
           <div class="card-title card-image waves-effect waves-block waves-light">
-            <img class="activator"
-              src="http://books.google.com/books/content?id=DioBrgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api" />
+            <img class="activator" src=<%= book.thumbnail %> />
           </div>
           <div class="card-content">
-            <span class="grey-text text-darken-4">夢を叶えるゾウ</span>
-            <p><a href="#">水野敬也</a></p>
+            <span class="grey-text text-darken-4"><%= book.title%></span>
+            <p><a href="#">
+                <% @authoers.where(book_id: book.id).each do |authoer|%>
+                <%= authoer.name %>
+                <% end %>
+              </a></p>
           </div>
+          <%# タグをパーツとして使いたい %>
           <div class="card-tags" style="font-size: 2rem;">
+            <% book.tags.each do |tag| %>
             <a href="" style="position: relative;">
               <div class="chip" style="">
-                Tag
+                <%= tag.tag_name %>
               </div>
-            </a>
-            <a href="">
-              <div class="chip ">
-                ビジネス
-              </div>
-            </a>
-            <a href="">
-              <div class="chip">
-                像
-              </div>
-            </a>
+            <% end %>
           </div>
+          <%# ---------------------------------------------------- %>
         </div>
+        <%end%>
       </div>
     </div>
 
@@ -109,33 +111,32 @@
     <%# lend tab ----------------------------------------------------　%>
     <div id="lend" class="col s12">
       <div class="row">
+        <% @book_lending_logs.each do |book_lending_log| %>
+          <% book = Book.find(book_lending_log.book_id) %>
         <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
           <div class="card-title card-image waves-effect waves-block waves-light">
-            <img class="activator"
-              src="http://books.google.com/books/content?id=DioBrgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api" />
+            <img class="activator" src=<%= book.thumbnail %> />
           </div>
           <div class="card-content">
-            <span class="grey-text text-darken-4">夢を叶えるゾウ</span>
-            <p><a href="#">水野敬也</a></p>
+            <span class="grey-text text-darken-4"><%= book.title%></span>
+            <p><a href="#">
+                <% @authoers.where(book_id: book.id).each do |authoer|%>
+                <%= authoer.name %>
+                <% end %>
+              </a></p>
           </div>
+          <%# タグをパーツとして使いたい %>
           <div class="card-tags" style="font-size: 2rem;">
+            <% book.tags.each do |tag| %>
             <a href="" style="position: relative;">
               <div class="chip" style="">
-                Tag
+                <%= tag.tag_name %>
               </div>
-            </a>
-            <a href="">
-              <div class="chip ">
-                ビジネス
-              </div>
-            </a>
-            <a href="">
-              <div class="chip">
-                像
-              </div>
-            </a>
+            <% end %>
           </div>
+          <%# ---------------------------------------------------- %>
         </div>
+        <%end%>
       </div>
     </div>
 
@@ -146,35 +147,36 @@
     <%# request tab ----------------------------------------------------　%>
     <div id="request" class="col s12">
       <div class="row">
+        <% @request_logs.each do |request_log| %>
+          <% book = Book.find(request_log.book_id) %>
         <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
           <div class="card-title card-image waves-effect waves-block waves-light">
-            <img class="activator"
-              src="http://books.google.com/books/content?id=DioBrgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api" />
+            <img class="activator" src=<%= book.thumbnail %> />
           </div>
           <div class="card-content">
-            <span class="grey-text text-darken-4">夢を叶えるゾウ</span>
-            <p><a href="#">水野敬也</a></p>
+            <span class="grey-text text-darken-4"><%= book.title%></span>
+            <p><a href="#">
+                <% @authoers.where(book_id: book.id).each do |authoer|%>
+                <%= authoer.name %>
+                <% end %>
+              </a></p>
           </div>
+          <%# タグをパーツとして使いたい %>
           <div class="card-tags" style="font-size: 2rem;">
+            <% book.tags.each do |tag| %>
             <a href="" style="position: relative;">
               <div class="chip" style="">
-                Tag
+                <%= tag.tag_name %>
               </div>
-            </a>
-            <a href="">
-              <div class="chip ">
-                ビジネス
-              </div>
-            </a>
-            <a href="">
-              <div class="chip">
-                像
-              </div>
-            </a>
+            <% end %>
           </div>
+          <%# ---------------------------------------------------- %>
         </div>
+        <%end%>
       </div>
     </div>
+
+
 
     
   </div>

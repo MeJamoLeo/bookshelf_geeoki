@@ -55,9 +55,15 @@ get '/mypage' do
 
   # 多対多の関係をhas_thoroughで表現
   @user = User.find(session[:id])
-  @books = @user.books
+  @my_books = @user.books
   @authoers = Authoermap.all
 
+  @all_books = Book.all
+
+    # history関連
+  @book_borrowed_logs = History.where(user_borrow_id: session[:id]).where(status: 1) #status 1 -> 本を貸し借り処理済み
+  @book_lending_logs = History.where(user_owner_id: session[:id]).where(status: 1) #status 1 -> 本を貸し借り処理済み
+  @request_logs = History.where(user_owner_id: session[:id]).where(status: 0) #status 0 -> リクエスト承認待ち
   return erb :mypage
 end
 
@@ -113,6 +119,7 @@ get '/books/:id' do
   @tags = @book.tags
   @users = @book.users
   @authoers = Authoermap.where(book_id: params[:id])
+
   return erb :detail
 end
 
@@ -122,13 +129,12 @@ post '/books/request' do
   owner_maps = Bookownermap.where(book_id: book_id)
   owner_maps.each do |owner_map|
     History.create(
-      user_owner_id: owner_map.usr_id,
+      user_owner_id: owner_map.user_id,
       user_borrow_id: user_borrow_id,
       book_id: book_id,
       status: 0
     )
   end
-  binding.pry
   redirect '/books'
 end
 
