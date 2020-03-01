@@ -38,7 +38,7 @@ get '/logout' do
 end
 
 get '/signup' do
-  erb :signup
+  erb :signup, layout: :none
 end
 
 post '/signup' do
@@ -78,22 +78,26 @@ post '/books/new' do
 
   user_id = session[:id]
   isbn = params[:isbn]
-
   book_info = get_book_info(isbn)
 
-  title = book_info[:title]
-  description = book_info[:description]
-  thumbnail = book_info[:thumbnail]
-  authoer_names = book_info[:authoers]
+  if Book.find_by(isbn: isbn)
+    book_already_exists = Book.find_by(isbn: isbn)
+    Bookownermap.create(user_id: user_id, book_id: book_already_exists.id)
+  end
+  redirect '/books'
+  return
+
+  # title = book_info[:title]
+  # description = book_info[:description]
+  # thumbnail = book_info[:thumbnail]
+  # authoer_names = book_info[:authoers]
 
   tags = params[:tag].split(",").to_a
-
-  new_book = Book.create(title: title, description: description, thumbnail: thumbnail, isbn: isbn)
-  authoer_names.each do |authoer_name|
+  new_book = Book.create(title: book_info[:title], description: book_info[:description], thumbnail: book_info[:thumbnail], isbn: isbn)
+  book_info[:authoers].each do |authoer_name|
     Authoermap.create(name: authoer_name.to_s, book_id: new_book.id)
   end
   Bookownermap.create(user_id: user_id, book_id: new_book.id)
-
 
   tags.each do |tag|
     new_tag = Tag.create(tag_name: tag, user_id: user_id)
@@ -107,9 +111,80 @@ get '/books/:id' do
   redirect '/' unless session[:id]
   @book = Book.find(params[:id])
   @tags = @book.tags
-  @user = User.find(session[:id])
+  @users = @book.users
+  @authoers = Authoermap.where(book_id: params[:id])
   return erb :detail
 end
+
+post '/books/request' do
+  user_borrow_id = session[:id]
+  book_id = params[:book_id]
+  owner_maps = Bookownermap.where(book_id: book_id)
+  owner_maps.each do |owner_map|
+    History.create(
+      user_owner_id: owner_map.usr_id,
+      user_borrow_id: user_borrow_id,
+      book_id: book_id,
+      status: 0
+    )
+  end
+  binding.pry
+  redirect '/books'
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # ----------------------------------------------------　plainフォルダ
 

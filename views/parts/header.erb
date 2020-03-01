@@ -13,5 +13,9 @@
             ><i class="material-icons blue-grey darken-1">search</i></a
           >
         </div>
+        <div class="col s3 white-text">
+        <a href="/mypage"
+        style="margin-top:2rem;"><%= User.find(session[:id]).name %></a>
+        </div>
       </div>
     </div>
