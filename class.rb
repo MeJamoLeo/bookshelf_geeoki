@@ -21,9 +21,6 @@ class Book < ActiveRecord::Base
 
   has_many :tagmaps
   has_many :tags, through: :tagmaps
-  # has_many :authoermap
-  # has_many :tagmap
-  # has_many :historie
 end
 
 class Tagmap < ActiveRecord::Base
@@ -42,6 +39,7 @@ class Authoermap < ActiveRecord::Base
 end
 
 class History < ActiveRecord::Base
-  # belongs_to :book
-  # belongs_to :user
+end
+
+class status < ActiveRecord::Base
 end
