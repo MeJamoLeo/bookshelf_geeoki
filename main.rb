@@ -17,10 +17,12 @@ get '/' do
   redirect '/login'
 end
 
+# ログインページ
 get '/login' do
   return erb :login, layout: :none
 end
 
+# ログイン
 post '/login' do
   user = User.find_by(password: params[:password])
 
@@ -32,15 +34,18 @@ post '/login' do
   end
 end
 
+# ログアウト
 get '/logout' do
   session.clear unless session[:id].nil?
   redirect '/'
 end
 
+# サインアップページ
 get '/signup' do
   erb :signup, layout: :none
 end
 
+# サインアップ
 post '/signup' do
   @email = params[:email]
   @password = params[:password]
@@ -50,6 +55,7 @@ post '/signup' do
   redirect '/login'
 end
 
+# マイページページ
 get '/mypage' do
   redirect '/' unless session[:id]
 
@@ -61,12 +67,41 @@ get '/mypage' do
   @all_books = Book.all
 
     # history関連
-  @book_borrowed_logs = History.where(user_borrow_id: session[:id]).where(status: 1) #status 1 -> 本を貸し借り処理済み
-  @book_lending_logs = History.where(user_owner_id: session[:id]).where(status: 1) #status 1 -> 本を貸し借り処理済み
-  @request_logs = History.where(user_owner_id: session[:id]).where(status: 0) #status 0 -> リクエスト承認待ち
+  @book_borrowed_logs = History.where(user_borrow_id: session[:id]).where(status_id: 1) #status_id 1 -> 本を貸し借り処理済み
+  @book_lending_logs = History.where(user_owner_id: session[:id]).where(status_id: 1) #status_id 1 -> 本を貸し借り処理済み
+  @request_logs = History.where(user_owner_id: session[:id]).where(status_id: 0) #status_id 0 -> リクエスト承認待ち
   return erb :mypage
 end
 
+post '/request/agree' do
+  book_agreed_id = params[:agree]
+  target_book = History.where(book_id: book_agreed_id).where(user_owner_id: session[:id]).where(status_id: 0)
+  target_book.update(status_id: 1)
+  redirect '/mypage#lend'
+end
+
+post '/request/disagree' do
+  book_disagreed_id = params[:disagree]
+  target_book = History.where(book_id: book_disagreed_id).where(user_owner_id: session[:id]).where(status_id: 0)
+  target_book.update(status_id: 3)
+  redirect '/mypage#request'
+end
+
+post '/request/return' do
+  book_return_id = params[:return]
+  target_book = History.where(book_id: book_return_id).where(user_borrow_id: session[:id]).where(status_id: 1)
+  target_book.update(status_id: 2)
+  redirect '/mypage#request'
+end
+
+post '/request/finish' do
+  book_finish_id = params[:finish]
+  target_book = History.where(book_id: book_finish_id).where(user_owner_id: session[:id]).where(status_id: 2)
+  target_book.update(status_id: 3)
+  redirect '/mypage#request'
+end
+
+# 本の一覧ページ
 get '/books' do
   redirect '/' unless session[:id]
   @books = Book.all
@@ -85,26 +120,22 @@ post '/books/new' do
   user_id = session[:id]
   isbn = params[:isbn]
   book_info = get_book_info(isbn)
-
+  
   if Book.find_by(isbn: isbn)
     book_already_exists = Book.find_by(isbn: isbn)
     Bookownermap.create(user_id: user_id, book_id: book_already_exists.id)
+    redirect '/books'
+    return
   end
-  redirect '/books'
-  return
-
-  # title = book_info[:title]
-  # description = book_info[:description]
-  # thumbnail = book_info[:thumbnail]
-  # authoer_names = book_info[:authoers]
-
+  
+  binding.pry
   tags = params[:tag].split(",").to_a
-  new_book = Book.create(title: book_info[:title], description: book_info[:description], thumbnail: book_info[:thumbnail], isbn: isbn)
+  new_book = Book.create(itle: book_info[:title],description: book_info[:description],thumbnail: book_info[:thumbnail],isbn: isbn)
   book_info[:authoers].each do |authoer_name|
     Authoermap.create(name: authoer_name.to_s, book_id: new_book.id)
   end
   Bookownermap.create(user_id: user_id, book_id: new_book.id)
-
+  
   tags.each do |tag|
     new_tag = Tag.create(tag_name: tag, user_id: user_id)
     Tagmap.create(book_id: new_book.id, tag_id: new_tag.id)
@@ -132,7 +163,7 @@ post '/books/request' do
       user_owner_id: owner_map.user_id,
       user_borrow_id: user_borrow_id,
       book_id: book_id,
-      status: 0
+      status_id: 0
     )
   end
   redirect '/books'

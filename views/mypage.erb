@@ -99,6 +99,15 @@
             <% end %>
           </div>
           <%# ---------------------------------------------------- %>
+          <% if History.where(user_owner_id: session[:id]).where(status_id: 2) %>
+            <div class="row">
+              <form action="/request/return" method="post">
+                <input type="hidden" name="return" id="return" value=<%= book.id %>>
+                  <button class="waves-effect waves-light btn-small light-green darken-1 col s10 offset-s1" type="submit">返却</button>
+                </input>
+              </form>
+            </div>
+          <% end %>
         </div>
         <%end%>
       </div>
@@ -135,6 +144,15 @@
             <% end %>
           </div>
           <%# ---------------------------------------------------- %>
+          <% if History.where(user_owner_id: session[:id]).where(status_id: 2) %>
+            <div class="row">
+              <form action="/request/finish" method="post">
+                <input type="hidden" name="finish" id="finish" value=<%= book.id %>>
+                  <button class="waves-effect waves-light btn-small yellow darken-1 black-text col s10 offset-s1" type="submit">返却確認</button>
+                </input>
+              </form>
+            </div>
+          <% end %>
         </div>
         <%end%>
       </div>
@@ -171,6 +189,18 @@
             <% end %>
           </div>
           <%# ---------------------------------------------------- %>
+          <div class="row">
+            <form action="/request/agree" method="post">
+              <input type="hidden" name="agree" id="agree" value=<%= book.id %>>
+                <button class="waves-effect waves-light btn-small blue darken-1 col s4 offset-s1" type="submit">許可</button>
+              </input>
+            </form>
+            <form action="/request/disagree" method="post">
+              <input type="hidden" name="disagree" id="disagree" value=<%= book.id %>>
+                <button class="waves-effect waves-light btn-small red darken-1 col s4 offset-s1" type="submit">拒否</button>
+              </input>
+            </form>
+          </div>
         </div>
         <%end%>
       </div>
