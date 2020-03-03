@@ -67,8 +67,8 @@ get '/mypage' do
   @all_books = Book.all
 
     # history関連
-  @book_borrowed_logs = History.where(user_borrow_id: session[:id]).where(status_id: 1) #status_id 1 -> 本を貸し借り処理済み
-  @book_lending_logs = History.where(user_owner_id: session[:id]).where(status_id: 1) #status_id 1 -> 本を貸し借り処理済み
+  @book_borrowed_logs = History.where(user_borrow_id: session[:id]).where.not(status_id: 3) #status_id 1 -> 本を貸し借り処理済み
+  @book_lending_logs = History.where(user_owner_id: session[:id]).where.not(status_id: 3) #status_id 1 -> 本を貸し借り処理済み
   @request_logs = History.where(user_owner_id: session[:id]).where(status_id: 0) #status_id 0 -> リクエスト承認待ち
   return erb :mypage
 end
@@ -128,9 +128,8 @@ post '/books/new' do
     return
   end
   
-  binding.pry
   tags = params[:tag].split(",").to_a
-  new_book = Book.create(itle: book_info[:title],description: book_info[:description],thumbnail: book_info[:thumbnail],isbn: isbn)
+  new_book = Book.create(title: book_info[:title],description: book_info[:description],thumbnail: book_info[:thumbnail],isbn: isbn)
   book_info[:authoers].each do |authoer_name|
     Authoermap.create(name: authoer_name.to_s, book_id: new_book.id)
   end
