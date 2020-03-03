@@ -13,9 +13,10 @@
             ><i class="material-icons blue-grey darken-1">search</i></a
           >
         </div>
-        <div class="col s3 white-text">
+        <div class="col m2 white-text hide-on-small-only">
         <a href="/mypage"
-        style="margin-top:2rem;"><%= User.find(session[:id]).name %></a>
+        style="margin-top:2rem; font-size:1.2rem"><%= User.find(session[:id]).name %></a>
         </div>
+        <a class="col s1 right-align" href="/logout"><i class="material-icons small white-text">exit_to_app</i></a>
       </div>
     </div>

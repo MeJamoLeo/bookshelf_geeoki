@@ -116,31 +116,63 @@ end
 
 post '/books/new' do
   redirect '/' unless session[:id]
-
-  user_id = session[:id]
-  isbn = params[:isbn]
-  book_info = get_book_info(isbn)
-  
-  if Book.find_by(isbn: isbn)
-    book_already_exists = Book.find_by(isbn: isbn)
-    Bookownermap.create(user_id: user_id, book_id: book_already_exists.id)
+  begin
+    user_id = session[:id]
+    isbn = params[:isbn]
+    book_info = get_book_info(isbn)
+    if Book.find_by(isbn: isbn)
+      book_already_exists = Book.find_by(isbn: isbn)
+      Bookownermap.create(user_id: user_id, book_id: book_already_exists.id)
+      redirect '/books'
+      return
+    end
+    tags = params[:tag].split(",").to_a
+    new_book = Book.create(title: book_info[:title],description: book_info[:description],thumbnail: book_info[:thumbnail],isbn: isbn)
+    book_info[:authoers].each do |authoer_name|
+      Authoermap.create(name: authoer_name.to_s, book_id: new_book.id)
+    end
+    Bookownermap.create(user_id: user_id, book_id: new_book.id)
+    tags.each do |tag|
+      new_tag = Tag.create(tag_name: tag, user_id: user_id)
+      Tagmap.create(book_id: new_book.id, tag_id: new_tag.id)
+    end
     redirect '/books'
-    return
+  rescue
+    redirect '/books/manual'
   end
-  
-  tags = params[:tag].split(",").to_a
-  new_book = Book.create(title: book_info[:title],description: book_info[:description],thumbnail: book_info[:thumbnail],isbn: isbn)
-  book_info[:authoers].each do |authoer_name|
+end
+
+get '/books/manual' do
+  redirect '/' unless session[:id]
+  return erb :add_manual
+end
+
+post '/books/manual' do
+  redirect '/' unless session[:id]
+  title = params[:title]
+  authoers = params[:authoer].split(",").to_a
+  description = params[:description]
+  tags = params[:tags].split(",").to_a
+  @thumbnail_name = params[:file][:filename]
+  thumbnail = params[:file][:tempfile]
+  isbn = params[:isbn]
+  binding.pry
+
+  File.open("./public/images/#{@thumbnail_name}", 'wb') do |f|
+    f.write(thumbnail.read)
+  end
+
+  new_book = Book.create(title: title, description: description, thumbnail: "/images/#{@thumbnail_name}", isbn: isbn)
+  authoers.each do |authoer_name|
     Authoermap.create(name: authoer_name.to_s, book_id: new_book.id)
   end
-  Bookownermap.create(user_id: user_id, book_id: new_book.id)
-  
+  Bookownermap.create(user_id: session[:id], book_id: new_book.id)
   tags.each do |tag|
-    new_tag = Tag.create(tag_name: tag, user_id: user_id)
+    new_tag = Tag.create(tag_name: tag, user_id: session[:id])
     Tagmap.create(book_id: new_book.id, tag_id: new_tag.id)
   end
 
-  redirect '/books'
+  redirect '/books/manual'
 end
 
 get '/books/:id' do
@@ -149,7 +181,6 @@ get '/books/:id' do
   @tags = @book.tags
   @users = @book.users
   @authoers = Authoermap.where(book_id: params[:id])
-
   return erb :detail
 end
 
@@ -218,44 +249,3 @@ end
 
 
 
-
-
-
-
-# ----------------------------------------------------　plainフォルダ
-
-get '/plain/books' do
-  @books = Book.all
-  @authoers = Authoermap.all
-  return erb :'plain/books', layout: :none
-end
-
-get '/plain/mypage' do
-  redirect '/' unless session[:id]
-  @authoers = Authoermap.all
-
-  @user = User.find(session[:id])
-  @books = @user.books
-
-  each @books do |book|
-  @tags = book.tags
-  end
-
-
-  return erb :'plain/mypage'
-end
-
-get '/plain/books' do
-  @books = Book.all
-  @authoers = Authoermap.all
-  return erb :'plain/books', layout: :none
-end
-
-get '/plain/tags' do
-  redirect '/' unless session[:id]
-
-  @book = Book.find(1)
-  @tags = @book.tags
-
-  erb :'plain/tags', layout: :none
-end

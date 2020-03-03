@@ -38,10 +38,14 @@
     <% @my_books.each do |book| %>
     <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
       <div class="card-title card-image waves-effect waves-block waves-light">
+      <% if book.thumbnail%>
         <img class="activator" src=<%= book.thumbnail %> />
+      <%else%>
+        <img class="activator" src="/images/no_image.webp"/>
+      <%end%>
       </div>
       <div class="card-content">
-        <span class="grey-text text-darken-4"><%= book.title%></span>
+        <span class="grey-text text-darken-4"><%= book.title %></span>
         <p><a href="#">
             <% @authoers.where(book_id: book.id).each do |authoer|%>
             <%= authoer.name %>
