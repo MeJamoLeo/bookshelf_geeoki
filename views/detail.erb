@@ -3,7 +3,11 @@
   <div class="book-info">
     <div class="row" style="position: relative;">
       <div class="col l2 offset-l1 m3 s12 info-img">
-        <img src=<%= @book.thumbnail %> alt="" />
+      <% if @book.thumbnail%>
+        <img class="activator" src=<%= @book.thumbnail %> />
+      <%else%>
+        <img class="activator" src="/images/no_image.webp"/>
+      <%end%>
       </div>
       <div class="col l6 offset-l1 m6 offset-m1 s12 info-text">
         <h2 style="font-size:3rem;"><%= @book.title %></h2>

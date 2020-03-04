@@ -73,6 +73,22 @@ get '/mypage' do
   return erb :mypage
 end
 
+post '/mybook/private' do
+  Bookownermap.where(book_id: params[:book_id_to_private]).where(user_id: session[:id]).update(be_public: 'false')
+  redirect '/mypage#mybooks'
+end
+
+post '/mybook/delete' do
+  binding.pry
+  Bookownermap.where(book_id: params[:book_id_delete]).where(user_id: session[:id]).delete_all
+  redirect '/mypage#mybooks'
+end
+
+post '/mybook/public' do
+  Bookownermap.where(book_id: params[:book_id_to_public]).where(user_id: session[:id]).update(be_public: 'true')
+  redirect '/mypage#mybooks'
+end
+
 post '/request/agree' do
   book_agreed_id = params[:agree]
   target_book = History.where(book_id: book_agreed_id).where(user_owner_id: session[:id]).where(status_id: 0)
@@ -104,8 +120,16 @@ end
 # 本の一覧ページ
 get '/books' do
   redirect '/' unless session[:id]
-  @books = Book.all
+  selected_bookownermaps = Bookownermap.where(be_public: true).to_a
+  book_ids = selected_bookownermaps.map{ |selected_bookownermap|
+    selected_bookownermap.book_id
+    }
+  @books = book_ids.uniq.map{|book_id|
+    Book.find(book_id)
+  }
+  
   @authoers = Authoermap.all
+  binding.pry
   return erb :books
 end
 
@@ -198,54 +222,4 @@ post '/books/request' do
   end
   redirect '/books'
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
