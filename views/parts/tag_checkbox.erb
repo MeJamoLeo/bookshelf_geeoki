@@ -1,0 +1,10 @@
+  <br><br>
+  <% Tag.all.each do |tag|%>
+    <div class="chip" style="margin-right: 1rem;">
+      <label class="">
+        <input class="filled-in" type="checkbox" name="existing_id[]" id="" value="<%= tag.id%>">
+        <span class="blue-grey-text text-darken-1"><%= tag.tag_name%></span>
+      </label>
+    </div>
+  <% end %>
+  <br>

@@ -68,7 +68,7 @@ get '/mypage' do
 
     # history関連
   @book_borrowed_logs = History.where(user_borrow_id: session[:id]).where.not(status_id: 3) #status_id 1 -> 本を貸し借り処理済み
-  @book_lending_logs = History.where(user_owner_id: session[:id]).where.not(status_id: 3) #status_id 1 -> 本を貸し借り処理済み
+  @book_lending_logs = History.where(user_owner_id: session[:id]).where.not(status_id: 3).where.not(status_id: 0) #status_id 1 -> 本を貸し借り処理済み
   @request_logs = History.where(user_owner_id: session[:id]).where(status_id: 0) #status_id 0 -> リクエスト承認待ち
   return erb :mypage
 end
@@ -79,7 +79,6 @@ post '/mybook/private' do
 end
 
 post '/mybook/delete' do
-  binding.pry
   Bookownermap.where(book_id: params[:book_id_delete]).where(user_id: session[:id]).delete_all
   redirect '/mypage#mybooks'
 end
@@ -107,7 +106,7 @@ post '/request/return' do
   book_return_id = params[:return]
   target_book = History.where(book_id: book_return_id).where(user_borrow_id: session[:id]).where(status_id: 1)
   target_book.update(status_id: 2)
-  redirect '/mypage#request'
+  redirect '/mypage#borrow'
 end
 
 post '/request/finish' do
@@ -127,9 +126,7 @@ get '/books' do
   @books = book_ids.uniq.map{|book_id|
     Book.find(book_id)
   }
-  
   @authoers = Authoermap.all
-  binding.pry
   return erb :books
 end
 
@@ -150,13 +147,24 @@ post '/books/new' do
       redirect '/books'
       return
     end
-    tags = params[:tag].split(",").to_a
+    
     new_book = Book.create(title: book_info[:title],description: book_info[:description],thumbnail: book_info[:thumbnail],isbn: isbn)
+
     book_info[:authoers].each do |authoer_name|
       Authoermap.create(name: authoer_name.to_s, book_id: new_book.id)
     end
+    
     Bookownermap.create(user_id: user_id, book_id: new_book.id)
-    tags.each do |tag|
+    # 既存のタグを結びつける
+    extist_tag_ids = params[:existing_id].map{|id| id.to_i}
+    extist_tag_ids.each {|extist_tag_id|
+      Tagmap.create(book_id: new_book.id, tag_id: extist_tag_id)
+    }
+    
+    # 新しいタグマップを結びつける
+    binding.pry
+    new_tags = params[:new_tags].split(",").to_a
+    new_tags.each do |new_tag|
       new_tag = Tag.create(tag_name: tag, user_id: user_id)
       Tagmap.create(book_id: new_book.id, tag_id: new_tag.id)
     end
@@ -180,7 +188,6 @@ post '/books/manual' do
   @thumbnail_name = params[:file][:filename]
   thumbnail = params[:file][:tempfile]
   isbn = params[:isbn]
-  binding.pry
 
   File.open("./public/images/#{@thumbnail_name}", 'wb') do |f|
     f.write(thumbnail.read)
@@ -223,3 +230,13 @@ post '/books/request' do
   redirect '/books'
 end
 
+
+get '/tags' do
+  erb :'parts/tag_checkbox'
+end
+
+post '/tags' do
+  tag_ids = params[:id].map {|tag_id| tag_id.to_i}
+  binding.pry
+  redirect '/tags'
+end

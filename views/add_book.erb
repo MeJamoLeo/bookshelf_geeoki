@@ -2,12 +2,24 @@
 <form action="/books/new" method="post">
   <label for="isbn">isbn バーコードの下に書いてある13桁の番号</label>
   <input type="number" name="isbn" id="isbn" />
-  <label for="tag">tag_name （カンマ,で区切ってください）</label>
-  <input type="text" name="tag" id="tag" />
+  <label for="new_tags">新規タグ登録　（カンマで区切ってください）</label>
+  <input type="text" name="new_tags" id="new_tags" />
+  <br><br>
+  <% Tag.all.each do |tag|%>
+    <div class="chip" style="margin-right: 1rem;">
+      <label class="">
+        <input class="filled-in" type="checkbox" name="existing_id[]" id="" value="<%= tag.id%>">
+        <span class="blue-grey-text text-darken-1"><%= tag.tag_name%></span>
+      </label>
+    </div>
+  <% end %>
+  <br>
+  <br>
 
-
+  <div class="right-align" style="width: auto;">
   <button class="btn waves-effect waves-light" type="submit" name="action">Submit
     <i class="material-icons right">send</i>
   </button>
+  </div>
 </form>
 </div>

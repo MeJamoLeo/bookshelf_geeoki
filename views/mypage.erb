@@ -20,15 +20,33 @@
         </li>
         <%# 借りた本 %>
         <li class="tab col s3">
-          <a class="" href="#borrow">借りている本</a>
+          <a class="" href="#borrow">借りている本
+            <% if @book_borrowed_logs.count > 0 %>
+              <span class=" badge pink darken-1 white-text">
+                <%= @book_borrowed_logs.count %>
+              </span>
+            <% end %>
+          </a>
         </li>
         <%# 貸した本 %>
         <li class="tab col s3">
-          <a href="#lend">貸している本</a>
+          <a href="#lend">貸している本
+            <% if @book_lending_logs.count > 0 %>
+              <span class="badge cyan darken-1">
+                <%= @book_lending_logs.count %>
+              </span>
+            <% end %>
+          </a>
         </li>
         <%# 貸してくれリクエスト %>
         <li class="tab col s3">
-          <a href="#request">リクエスト承認待ち</a>
+          <a href="#request">リクエスト承認待ち
+            <% if @request_logs.count > 0 %>
+              <span class="new badge amber darken-1">
+                <%= @request_logs.count %>
+              </span>
+            <% end %>
+          </a>
         </li>
     </div>
 
@@ -38,11 +56,13 @@
     <% @my_books.each do |book| %>
     <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
       <div class="card-title card-image waves-effect waves-block waves-light">
-      <% if book.thumbnail%>
-        <img class="activator" src=<%= book.thumbnail %> />
-      <%else%>
-        <img class="activator" src="/images/no_image.webp"/>
-      <%end%>
+      <a href="/books/<%=book.id%>">
+        <% if book.thumbnail%>
+          <img class="activator" src=<%= book.thumbnail %> />
+        <%else%>
+          <img class="activator" src="/images/no_image.webp"/>
+        <%end%>
+      </a>
       </div>
       <div class="card-content">
         <span class="grey-text text-darken-4"><%= book.title %></span>
@@ -97,7 +117,9 @@
     <% book = Book.find(book_borrowed_log.book_id) %>
     <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
       <div class="card-title card-image waves-effect waves-block waves-light">
+      <a href="/books/<%=book.id%>">
         <img class="activator" src=<%= book.thumbnail %> />
+      </a>
       </div>
       <div class="card-content">
         <span class="grey-text text-darken-4"><%= book.title%></span>
@@ -205,7 +227,9 @@
     <% book = Book.find(request_log.book_id) %>
     <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
       <div class="card-title card-image waves-effect waves-block waves-light">
+      <a href="/books/<%=book.id%>">
         <img class="activator" src=<%= book.thumbnail %> />
+      </a>
       </div>
       <div class="card-content">
         <span class="grey-text text-darken-4"><%= book.title%></span>

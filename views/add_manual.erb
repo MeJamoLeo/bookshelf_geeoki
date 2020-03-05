@@ -15,8 +15,6 @@
         <textarea class="materialize-textarea" type="text" name="description" id="description"　required></textarea>
         <label for="isbn">ISBN　（スペース，ハイフン不要）</label>
         <input type="text" name="isbn" id="isbn" required>
-        <label for="tags">タグ　（カンマで区切ってください）</label>
-        <input type="text" name="tags" id="tags">
         <div class="file-field input-field">
           <div class="btn">
             <span>File</span>
@@ -26,6 +24,9 @@
             <input class="file-path validate" type="text" placeholder="サムネイル画像を選択してください">
           </div>
         </div>
+        <label for="new_tags">新規タグ登録　（カンマで区切ってください）</label>
+        <input type="text" name="new_tags" id="new_tags">
+        <%= erb :'parts/tag_checkbox'%>
         <br>
         <br>
         <div class="right-align" style="width: auto;">

@@ -96,3 +96,11 @@ input {
   width: auto;
   font-size: 1rem;
 }
+
+.badge {
+  border-radius: 10px;
+}
+
+.tag_check_box {
+  margin-right: 5px;
+}
