@@ -147,26 +147,29 @@ post '/books/new' do
       redirect '/books'
       return
     end
-    
+
     new_book = Book.create(title: book_info[:title],description: book_info[:description],thumbnail: book_info[:thumbnail],isbn: isbn)
 
     book_info[:authoers].each do |authoer_name|
       Authoermap.create(name: authoer_name.to_s, book_id: new_book.id)
     end
-    
+
     Bookownermap.create(user_id: user_id, book_id: new_book.id)
     # 既存のタグを結びつける
-    extist_tag_ids = params[:existing_id].map{|id| id.to_i}
-    extist_tag_ids.each {|extist_tag_id|
-      Tagmap.create(book_id: new_book.id, tag_id: extist_tag_id)
-    }
-    
+    if params[:existing_id]
+      extist_tag_ids = params[:existing_id].map{|id| id.to_i}
+      extist_tag_ids.each {|extist_tag_id|
+        Tagmap.create(book_id: new_book.id, tag_id: extist_tag_id)
+      }
+    end
+
     # 新しいタグマップを結びつける
-    binding.pry
-    new_tags = params[:new_tags].split(",").to_a
-    new_tags.each do |new_tag|
-      new_tag = Tag.create(tag_name: tag, user_id: user_id)
-      Tagmap.create(book_id: new_book.id, tag_id: new_tag.id)
+    if params[:new_tags]
+      new_tags = params[:new_tags].split(",").to_a
+      new_tags.each do |new_tag|
+        new_tag = Tag.create(tag_name: tag, user_id: user_id)
+        Tagmap.create(book_id: new_book.id, tag_id: new_tag.id)
+      end
     end
     redirect '/books'
   rescue
@@ -184,7 +187,7 @@ post '/books/manual' do
   title = params[:title]
   authoers = params[:authoer].split(",").to_a
   description = params[:description]
-  tags = params[:tags].split(",").to_a
+  new_tags = params[:new_tags].split(",").to_a
   @thumbnail_name = params[:file][:filename]
   thumbnail = params[:file][:tempfile]
   isbn = params[:isbn]
@@ -198,12 +201,12 @@ post '/books/manual' do
     Authoermap.create(name: authoer_name.to_s, book_id: new_book.id)
   end
   Bookownermap.create(user_id: session[:id], book_id: new_book.id)
-  tags.each do |tag|
-    new_tag = Tag.create(tag_name: tag, user_id: session[:id])
+  new_tags.each do |new_tag|
+    new_tag = Tag.create(tag_name: new_tag, user_id: session[:id])
     Tagmap.create(book_id: new_book.id, tag_id: new_tag.id)
   end
 
-  redirect '/books/manual'
+  redirect '/books'
 end
 
 get '/books/:id' do
@@ -239,4 +242,8 @@ post '/tags' do
   tag_ids = params[:id].map {|tag_id| tag_id.to_i}
   binding.pry
   redirect '/tags'
+end
+
+get '/search/:keyword' do
+
 end
