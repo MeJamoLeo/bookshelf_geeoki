@@ -67,7 +67,7 @@ get '/mypage' do
   @all_books = Book.all
 
     # history関連
-  @book_borrowed_logs = History.where(user_borrow_id: session[:id]).where.not(status_id: 3) #status_id 1 -> 本を貸し借り処理済み
+  @book_borrowed_logs = History.where(user_borrow_id: session[:id]).where.not(status_id: 3).where.not(status: 0) #status_id 1 -> 本を貸し借り処理済み
   @book_lending_logs = History.where(user_owner_id: session[:id]).where.not(status_id: 3).where.not(status_id: 0) #status_id 1 -> 本を貸し借り処理済み
   @request_logs = History.where(user_owner_id: session[:id]).where(status_id: 0) #status_id 0 -> リクエスト承認待ち
   return erb :mypage
@@ -234,16 +234,6 @@ post '/books/request' do
 end
 
 
-# get '/tags' do
-#   erb :'parts/tag_checkbox'
-# end
-
-# post '/tags' do
-#   tag_ids = params[:id].map {|tag_id| tag_id.to_i}
-#   binding.pry
-#   redirect '/tags'
-# end
-
 get '/search' do
   splited_keywords = params[:keyword].split(/[[:blank:]]+/)
   @searched_books = []
@@ -260,38 +250,18 @@ get '/search' do
   end #検索で”hoge”入力　=> リダイレクトされたおk
 
 
-
   @search_type = "キーワード検索"
   @search_element = params[:keyword]
-  # be_public_books = @searched_books.to_a.map{|book| book.bookownermaps.where(be_public:true)[0]} #ここでパブリックの選定してる
-  # binding.pryå
-  # return redirect '/books' #if be_public_books.empty?
-
-  # @target_books = be_public_books.map{|book| next if book.nil?}.book_id.map{|book_id| Book.find(book_id).to_a}
   @authoers = Authoermap.all
   erb :serch
 end
 
 get '/search/tags/:tagid' do
   tag_id = params[:tagid].to_i
-  # @target_books = Tag.find(tag_id).books.to_a
-  target_ids = Bookownermap.where(be_public: true).book_id.to_a.map{}
+  # sql = "select * from books INNER JOIN tagmaps on books.id = tagmaps.book_id INNER JOIN bookownermaps ON books.id = bookownermaps.book_id WHERE tagmaps.tag_id = #{tag_id}"
+  @searched_books = Book.joins(:bookownermaps).joins(:tagmaps).select("books.id, books.title, books.thumbnail").where('tagmaps.tag_id = ?', "#{tag_id}")
   @search_type = "タグ"
   @search_element = Tag.find(tag_id).tag_name
   @authoers = Authoermap.all
   erb :serch
 end
-
-# selected_bookownermaps = Bookownermap.where(be_public: true).to_a
-# book_ids = selected_bookownermaps.map{ |selected_bookownermap|
-#   selected_bookownermap.book_id
-#   }
-#   selected_bookownermaps = Bookownermap.where(be_public: true).to_a
-#   book_ids = selected_bookownermaps.map{ |selected_bookownermap|
-#     selected_bookownermap.book_id
-#     }
-
-# Bookownermap.where(be_public: true).to_a.map{|ownermap| ownermap.book}.uniq
-# => [8, 12, 14, 16, 17, 18, 19, 7] #public状態の本のid
-
-
