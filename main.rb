@@ -234,16 +234,63 @@ post '/books/request' do
 end
 
 
-get '/tags' do
-  erb :'parts/tag_checkbox'
+# get '/tags' do
+#   erb :'parts/tag_checkbox'
+# end
+
+# post '/tags' do
+#   tag_ids = params[:id].map {|tag_id| tag_id.to_i}
+#   binding.pry
+#   redirect '/tags'
+# end
+
+get '/search' do
+  splited_keywords = params[:keyword].split(/[[:blank:]]+/)
+  @searched_books = []
+  splited_keywords.each do |keyword|
+    next if keyword == ""
+    sql = "SELECT DISTINCT books.id, books.title, books.thumbnail FROM books INNER JOIN  bookownermaps ON books.id = bookownermaps.book_id WHERE TITLE LIKE '%#{keyword}%' AND bookownermaps.be_public = true;"
+    # @searched_books += Book.where('title LIKE(?)', "%#{keyword}%")
+    @searched_books += Book.find_by_sql(sql)
+  end
+  # @searched_books.uniq!
+  if @searched_books.empty?
+    return redirect '/books'
+  end #検索で”hoge”入力　=> リダイレクトされたおk
+
+
+
+  @search_type = "キーワード検索"
+  @search_element = params[:keyword]
+  # be_public_books = @searched_books.to_a.map{|book| book.bookownermaps.where(be_public:true)[0]} #ここでパブリックの選定してる
+  # binding.pryå
+  # return redirect '/books' #if be_public_books.empty?
+
+  # @target_books = be_public_books.map{|book| next if book.nil?}.book_id.map{|book_id| Book.find(book_id).to_a}
+  @authoers = Authoermap.all
+  erb :serch
 end
 
-post '/tags' do
-  tag_ids = params[:id].map {|tag_id| tag_id.to_i}
-  binding.pry
-  redirect '/tags'
+get '/search/tags/:tagid' do
+  tag_id = params[:tagid].to_i
+  # @target_books = Tag.find(tag_id).books.to_a
+  target_ids = Bookownermap.where(be_public: true).book_id.to_a.map{}
+  @search_type = "タグ"
+  @search_element = Tag.find(tag_id).tag_name
+  @authoers = Authoermap.all
+  erb :serch
 end
 
-get '/search/:keyword' do
+# selected_bookownermaps = Bookownermap.where(be_public: true).to_a
+# book_ids = selected_bookownermaps.map{ |selected_bookownermap|
+#   selected_bookownermap.book_id
+#   }
+#   selected_bookownermaps = Bookownermap.where(be_public: true).to_a
+#   book_ids = selected_bookownermaps.map{ |selected_bookownermap|
+#     selected_bookownermap.book_id
+#     }
 
-end
+# Bookownermap.where(be_public: true).to_a.map{|ownermap| ownermap.book}.uniq
+# => [8, 12, 14, 16, 17, 18, 19, 7] #public状態の本のid
+
+

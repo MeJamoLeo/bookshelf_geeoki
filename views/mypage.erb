@@ -75,7 +75,7 @@
       <%# タグをパーツとして使いたい %>
       <div class="card-tags" style="font-size: 2rem;">
         <% book.tags.each do |tag| %>
-        <a href="" style="position: relative;">
+        <a href="/search/tags/<%= tag.id %>" style="position: relative;">
           <div class="chip" style="">
             <%= tag.tag_name %>
           </div>
@@ -132,7 +132,7 @@
       <%# タグをパーツとして使いたい %>
       <div class="card-tags" style="font-size: 2rem;">
         <% book.tags.each do |tag| %>
-        <a href="" style="position: relative;">
+        <a href="/search/tags/<%= tag.id %>" style="position: relative;">
           <div class="chip" style="">
             <%= tag.tag_name %>
           </div>
@@ -187,7 +187,7 @@
       <%# タグをパーツとして使いたい %>
       <div class="card-tags" style="font-size: 2rem;">
         <% book.tags.each do |tag| %>
-        <a href="" style="position: relative;">
+        <a href="/search/tags/<%= tag.id %>" style="position: relative;">
           <div class="chip" style="">
             <%= tag.tag_name %>
           </div>
@@ -242,7 +242,7 @@
       <%# タグをパーツとして使いたい %>
       <div class="card-tags" style="font-size: 2rem;">
         <% book.tags.each do |tag| %>
-        <a href="" style="position: relative;">
+        <a href="/search/tags/<%= tag.id %>" style="position: relative;">
           <div class="chip" style="">
             <%= tag.tag_name %>
           </div>

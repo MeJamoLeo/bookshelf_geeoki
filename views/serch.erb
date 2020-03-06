@@ -1,14 +1,15 @@
 <div class="wrapper-books">
   <div class="container">
     <div class="books-title">
-      <h2 style="display:inline-block;">Books List</h2>
+      <h3 style="display:inline-block;"><%= @search_type %>：<span style="margin-left: 2rem;"><%= @search_element %></span></h3>
       <a class="btn-floating btn-large waves-effect waves-light red" style="float: right;
             margin-top: 3rem;
             margin-right: 3rem;" href='/books/new'>
         <i class="material-icons">add</i></a>
     </div>
+    <br>
     <div class="row">
-      <% @books.each do |book| %>
+      <% @searched_books.each do |book| %>
             <div class="col s4 offset-s1 m3 offset-m1 l2 offset-l1 card">
               <div class="card-title card-image waves-effect waves-block waves-light">
                 <a href="/books/<%= book.id %>">

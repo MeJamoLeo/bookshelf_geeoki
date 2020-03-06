@@ -3,17 +3,23 @@
         <div href="/books" class="col s2 white-text center nav-right">
           <a class="nav-logo" href="/books">books</a>
         </div>
-        <div class="col s7 m5 offset-m1 nav-middle center">
-          <div class="search-left">
-            <input type="search" />
+
+        <form action="/search" method="get">
+          <div class="col s7 m5 offset-m1 nav-middle center">
+            <div class="search-left">
+              <input type="search" name="keyword" id="keyword" maxlength="15" />
+            </div>
           </div>
-        </div>
-        <div class="col s1 search-right" style="margin-top: 5px;">
-          <button class="btn-floating btn waves-effect waves-light" type="submit"
-            ><i class="material-icons blue-grey darken-1">search</i></button
-          >
-        </div>
-        <div class="col m2 white-text hide-on-small-only">
+          <div class="col s1 search-right" style="margin-top: 5px;">
+            <button class="btn-floating btn waves-effect waves-light" type="submit">
+              <i class="material-icons blue-grey darken-1">
+                search
+              </i>
+            </button>
+          </div>
+        </form>
+
+        <div class="col m2 white-text hid  e-on-small-only">
         <a href="/mypage"
         style="margin-top:2rem; font-size:1.2rem"><%= User.find(session[:id]).name %></a>
         </div>
