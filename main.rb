@@ -250,7 +250,8 @@ get '/search' do
   splited_keywords.each do |keyword|
     next if keyword == ""
     sql = "SELECT DISTINCT books.id, books.title, books.thumbnail FROM books INNER JOIN  bookownermaps ON books.id = bookownermaps.book_id WHERE TITLE LIKE '%#{keyword}%' AND bookownermaps.be_public = true;"
-    # @searched_books += Book.where('title LIKE(?)', "%#{keyword}%")
+    # activerecord での書き方
+      # Book.joins(:bookownermaps).select("books.id, books.title, books.thumbnail").where('books.title LIKE ?',"%Ruby%").distinct
     @searched_books += Book.find_by_sql(sql)
   end
   # @searched_books.uniq!
