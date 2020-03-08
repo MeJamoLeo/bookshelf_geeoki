@@ -1,0 +1,8 @@
+  <% if @message %>
+    <div class="right-align" style="margin-right:2rem;">
+      <div class=" btn-large <%= @message[:color]%>">
+      <i class="material-icons left"><%= @message[:icon]%></i>
+      <%= @message[:message] %>
+      </div>
+    </div>
+  <% end %>

@@ -30,3 +30,9 @@ def create_tables(title, authoers, description, thumbnail, isbn, tags)
     Tagmap.create(book_id: new_book.id, tag_id: new_tag.id)
   end
 end
+
+helpers do
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
+end

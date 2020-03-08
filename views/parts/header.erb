@@ -1,28 +1,29 @@
-    <div class="wrapper-nav light-blue lighten-4">
-      <div class="row nav-row">
-        <div href="/books" class="col s2 white-text center nav-right">
-          <a class="nav-logo" href="/books">books</a>
-        </div>
-
-        <form action="/search" method="get">
-          <div class="col s7 m5 offset-m1 nav-middle center">
-            <div class="search-left">
-              <input type="search" name="keyword" id="keyword" maxlength="15" />
-            </div>
-          </div>
-          <div class="col s1 search-right" style="margin-top: 5px;">
-            <button class="btn-floating btn waves-effect waves-light" type="submit">
-              <i class="material-icons blue-grey darken-1">
-                search
-              </i>
-            </button>
-          </div>
-        </form>
-
-        <div class="col m2 white-text hid  e-on-small-only">
-        <a href="/mypage"
-        style="margin-top:2rem; font-size:1.2rem"><%= User.find(session[:id]).name %></a>
-        </div>
-        <a class="col s1 right-align" href="/logout"><i class="material-icons small white-text">exit_to_app</i></a>
-      </div>
+<div class="wrapper-nav light-blue lighten-4">
+  <div class="row nav-row">
+    <div href="/books" class="col s2 white-text center nav-right">
+      <a class="nav-logo" href="/books">books</a>
     </div>
+
+    <form action="/search" method="get">
+      <div class="col s7 m5 offset-m1 nav-middle center">
+        <div class="search-left">
+          <input type="search" name="keyword" id="keyword" maxlength="15" />
+        </div>
+      </div>
+      <div class="col s1 search-right" style="margin-top: 5px;">
+        <button class="btn-floating btn waves-effect waves-light" type="submit">
+          <i class="material-icons blue-grey darken-1">
+            search
+          </i>
+        </button>
+      </div>
+    </form>
+
+    <div class="col m2 white-text hid  e-on-small-only">
+    <a href="/mypage"
+    style="margin-top:2rem; font-size:1.2rem"><%= User.find(session[:id]).name %></a>
+    </div>
+    <a class="col s1 right-align" href="/logout"><i class="material-icons small white-text">exit_to_app</i></a>
+    </div>
+</div>
+<%= erb :'parts/flash_msg' %>

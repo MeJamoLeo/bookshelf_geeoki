@@ -12,9 +12,29 @@ require './function'
 
 enable :sessions
 
+before do
+  unless request.path == '/login' || request.path == '/signup' || session[:id]
+    session[:notice] = {color: "pink darken-4", message: "ログインして下さい", icon: "error"}
+    return redirect '/login'
+  end
+  @user = User.find(session[:id]) if session[:id]
+  @message = session.delete :notice
+end
+
+not_found do
+  erb :not_found
+end
+
+helpers do
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
+end
+
+
 # トップページ
 get '/' do
-  redirect '/login'
+  # redirect '/login'
 end
 
 # ログインページ
@@ -25,11 +45,12 @@ end
 # ログイン
 post '/login' do
   user = User.find_by(password: params[:password])
-
   if user && User.find_by(email: params[:email])
     session[:id] = user[:id]
+    session[:notice] = {color: "blue darken-4", message: "ログインしました", icon: "check_circle"}
     redirect '/books'
   else
+    session[:notice] = {color: "pink darken-4", message: "入力情報を確認してください", icon: "error"}
     redirect '/login'
   end
 end
@@ -47,9 +68,9 @@ end
 
 # サインアップ
 post '/signup' do
-  @email = params[:email]
-  @password = params[:password]
-  @user_name = params[:name]
+  @email = h(params[:email])
+  @password = h(params[:password])
+  @user_name = h(params[:name])
 
   User.create(email: @email, password: @password, name: @user_name)
   redirect '/login'
@@ -75,16 +96,19 @@ end
 
 post '/mybook/private' do
   Bookownermap.where(book_id: params[:book_id_to_private]).where(user_id: session[:id]).update(be_public: 'false')
+  session[:notice] = {color: "yellow darken-1", message: "公開停止しました", icon: "pause_circle_filled"}
   redirect '/mypage#mybooks'
 end
 
 post '/mybook/delete' do
   Bookownermap.where(book_id: params[:book_id_delete]).where(user_id: session[:id]).delete_all
+  session[:notice] = {color: "blue-grey darken-1", message: "削除しました", icon: "delete"}
   redirect '/mypage#mybooks'
 end
 
 post '/mybook/public' do
   Bookownermap.where(book_id: params[:book_id_to_public]).where(user_id: session[:id]).update(be_public: 'true')
+  session[:notice] = {color: "light-blue", message: "公開しました", icon: "public"}
   redirect '/mypage#mybooks'
 end
 
@@ -92,6 +116,7 @@ post '/request/agree' do
   book_agreed_id = params[:agree]
   target_book = History.where(book_id: book_agreed_id).where(user_owner_id: session[:id]).where(status_id: 0)
   target_book.update(status_id: 1)
+  session[:notice] = {color: "blue darken-1", message: "リクエストを許可しました", icon: "check_circle"}
   redirect '/mypage#lend'
 end
 
@@ -99,6 +124,7 @@ post '/request/disagree' do
   book_disagreed_id = params[:disagree]
   target_book = History.where(book_id: book_disagreed_id).where(user_owner_id: session[:id]).where(status_id: 0)
   target_book.update(status_id: 3)
+  session[:notice] = {color: "red darken-1", message: "リクエストを拒否しました", icon: "pan_tool"}
   redirect '/mypage#request'
 end
 
@@ -106,6 +132,7 @@ post '/request/return' do
   book_return_id = params[:return]
   target_book = History.where(book_id: book_return_id).where(user_borrow_id: session[:id]).where(status_id: 1)
   target_book.update(status_id: 2)
+  session[:notice] = {color: "light-green darken-1", message: "返却確認待ちです", icon: "sentiment_satisfied_alt"}
   redirect '/mypage#borrow'
 end
 
@@ -113,6 +140,7 @@ post '/request/finish' do
   book_finish_id = params[:finish]
   target_book = History.where(book_id: book_finish_id).where(user_owner_id: session[:id]).where(status_id: 2)
   target_book.update(status_id: 3)
+  session[:notice] = {color: "yellow darken-1", message: "返却確認をしました", icon: "insert_emoticon"}
   redirect '/mypage#request'
 end
 
@@ -139,8 +167,8 @@ post '/books/new' do
   redirect '/' unless session[:id]
   begin
     user_id = session[:id]
-    isbn = params[:isbn]
-    book_info = get_book_info(isbn)
+    isbn = h(params[:isbn])
+    book_info = h(get_book_info(isbn))
     if Book.find_by(isbn: isbn)
       book_already_exists = Book.find_by(isbn: isbn)
       Bookownermap.create(user_id: user_id, book_id: book_already_exists.id)
@@ -165,7 +193,7 @@ post '/books/new' do
 
     # 新しいタグマップを結びつける
     if params[:new_tags]
-      new_tags = params[:new_tags].split(",").to_a
+      new_tags = h(params[:new_tags]).split(",").to_a
       new_tags.each do |new_tag|
         new_tag = Tag.create(tag_name: tag, user_id: user_id)
         Tagmap.create(book_id: new_book.id, tag_id: new_tag.id)
@@ -184,13 +212,13 @@ end
 
 post '/books/manual' do
   redirect '/' unless session[:id]
-  title = params[:title]
-  authoers = params[:authoer].split(",").to_a
-  description = params[:description]
-  new_tags = params[:new_tags].split(",").to_a
+  title = h(params[:title])
+  authoers = h(params[:authoer]).split(",").to_a
+  description = h(params[:description])
+  new_tags = h(params[:new_tags]).split(",").to_a
   @thumbnail_name = params[:file][:filename]
   thumbnail = params[:file][:tempfile]
-  isbn = params[:isbn]
+  isbn = h(params[:isbn])
 
   File.open("./public/images/#{@thumbnail_name}", 'wb') do |f|
     f.write(thumbnail.read)
@@ -211,7 +239,11 @@ end
 
 get '/books/:id' do
   redirect '/' unless session[:id]
-  @book = Book.find(params[:id])
+   if Book.find(params[:id])
+    @book = Book.find(params[:id])
+  else
+    # not_found
+  end
   @tags = @book.tags
   @users = @book.users
   @authoers = Authoermap.where(book_id: params[:id])
@@ -230,6 +262,7 @@ post '/books/request' do
       status_id: 0
     )
   end
+  session[:notice] = {color: "teal darken-2", message: "リクエストを送信しました", icon: "done"}
   redirect '/books'
 end
 
