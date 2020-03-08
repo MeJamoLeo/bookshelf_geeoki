@@ -1,7 +1,7 @@
 development:
   adapter: postgresql
-  database: lib_geek2
-  host: localhost
-  username: leo
-  password:
+  database: ENV['DB_NAME']
+  host: ENV['DB_HOST']
+  username: ENV['DB_USER']
+  password: ENV['DB_PASSWORD']
   encoding: utf8
