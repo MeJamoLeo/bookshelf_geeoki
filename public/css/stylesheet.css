@@ -104,3 +104,8 @@ input {
 .tag_check_box {
   margin-right: 5px;
 }
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
+}
