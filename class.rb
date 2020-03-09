@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
-ActiveRecord::Base.configurations = YAML.load_file('database.yml')
-ActiveRecord::Base.establish_connection(:development)
+ActiveRecord::Base.establish_connection(
+  adapter: ENV['DB_ADAPTER'],
+  database: ENV['DB_NAME'],
+  host: ENV['DB_HOST'],
+  username: ENV['DB_USER'],
+  password: ENV['DB_PASSWORD'],
+  encoding: 'utf8'
+)
 
 class User < ActiveRecord::Base
   # email => 必須　ユニーク　40文字以下

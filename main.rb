@@ -1,12 +1,10 @@
 # frozen_string_literal: true
+require 'rubygems'
+require 'bundler'
+require 'bundler/setup'
+Bundler.require
 
-require 'sinatra'
-require 'sinatra/reloader'
-require 'sinatra/cookies'
-require 'active_record'
-require 'pry'
-require 'pg'
-require 'erb'
+
 require './class'
 require './function'
 
@@ -79,7 +77,8 @@ post '/signup' do
     redirect '/login'
     
   else
-    binding.pry
+    session[:notice] = {color: "yellow darken-1", message:"そのメールアドレスはすでに使用されています", icon: "error"}
+    redirect '/signup'
   end
 end
 

@@ -1,7 +1,5 @@
 def get_book_info(isbn)
-require 'net/http'
-require 'uri'
-require 'json'
+
 goole_books_url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'
 uri = URI.parse(goole_books_url + isbn)
 json = Net::HTTP.get(uri)
