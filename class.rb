@@ -4,6 +4,8 @@ ActiveRecord::Base.configurations = YAML.load_file('database.yml')
 ActiveRecord::Base.establish_connection(:development)
 
 class User < ActiveRecord::Base
+  # email => 必須　ユニーク　40文字以下
+  validates :email, presence: true, uniqueness: true, length: { maximum: 40 }
   has_many :bookownermaps
   has_many :books, through: :bookownermaps
 

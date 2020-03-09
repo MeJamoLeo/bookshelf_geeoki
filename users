@@ -1,0 +1,878 @@
+\l
+du
+du
+\du
+drop role Leo
+\du
+drop role saru;
+drop role Leo;
+\dt
+drop table shoplist;
+psql -d postgres
+\l
+\c myapp
+\c postgres
+\d
+CREATE TABLE users (
+  id SERIAL NOT NULL PRIMARY KEY ,
+  name VARCHAR( 25 ) NOT NULL ,
+  email VARCHAR( 35 ) NOT NULL ,
+  password VARCHAR( 60 ) NOT NULL ,
+  UNIQUE (email)
+);
+\d
+\d
+INSERT INTO users (name, email, password)
+VALUES ('kinjo', 'kinjo@mail.com','kinjo');
+show tables
+-help
+help
+\?
+\l
+DROP DATABASE template1
+DROP DATABASE template0
+DROP DATABASE postgres
+\;
+\l
+CREATE DATABASE leo
+\l
+CREATE TABLE users (
+  id SERIAL NOT NULL PRIMARY KEY ,
+  name VARCHAR( 25 ) NOT NULL ,
+  email VARCHAR( 35 ) NOT NULL ,
+  password VARCHAR( 60 ) NOT NULL ,
+  UNIQUE (email)
+);
+CREATE DATABASE leo;
+\l
+\c leo
+CREATE TABLE users (
+  id SERIAL NOT NULL PRIMARY KEY ,
+  name VARCHAR( 25 ) NOT NULL ,
+  email VARCHAR( 35 ) NOT NULL ,
+  password VARCHAR( 60 ) NOT NULL ,
+  UNIQUE (email)
+);
+\dt
+\d
+\l
+\d
+CREATE TABLE Books (
+id SERIAL NOT NULL,
+ title VARCHAR(20) PRIMARY KEY,
+ authoer VARCHAR(20),
+description VARCHAR(225),
+thumbnail VARCHAR(225),
+tags_id INT[],
+created_at DATETIME,
+updated_at DATETIME
+);
+CREATE TABLE Books (
+id SERIAL NOT NULL,
+ title VARCHAR(20) PRIMARY KEY,
+ authoer VARCHAR(20),
+description VARCHAR(225),
+thumbnail VARCHAR(225),
+tags_id INT[],
+created_at TIMESTAMP,
+updated_at TIMESTAMP
+);
+\l
+\dt
+CREATE TABLE Tags (
+id SERIAL NOT NULL,
+name VARCHAR(20) PRIMARY KEY,
+created_at TIMESTAMP,
+updated_at TIMESTAMP
+);
+CREATE TABLE Histories (
+id SERIAL NOT NULL,
+user_lend_id INT NOT NULL,
+user_borrow_id INT NOT NULL,
+books_id INT NOT NULL
+created_at TIMESTAMP,
+updated_at TIMESTAMP
+);
+CREATE TABLE Histories (
+id SERIAL NOT NULL,
+user_lend_id INT NOT NULL,
+user_borrow_id INT NOT NULL,
+books_id INT NOT NULL,
+created_at TIMESTAMP,
+updated_at TIMESTAMP
+);
+CREATE TABLE Users (
+id SERIAL NOT NULL,
+email VARCHAR(45) PRIMARY KEY,
+password VARCHAR(45) NOT NULL,
+name VARCHAR(20) NOT NULL,
+books_id INT[] ,
+created_at TIMESTAMP,
+updated_at TIMESTAMP
+);
+\dt
+drop table users 
+\dy
+\dt
+drop table users ;
+drop table users;
+\dt
+CREATE TABLE Users (
+id SERIAL NOT NULL,
+email VARCHAR(45) PRIMARY KEY,
+password VARCHAR(45) NOT NULL,
+name VARCHAR(20) NOT NULL,
+books_id INT[] ,
+created_at TIMESTAMP,
+updated_at TIMESTAMP
+);
+CREATE TABLE BooksToUsers (
+id SERIAL NOT NULL,
+user_lend_id INT NOT NULL,
+user_borrow_id INT NOT NULL,
+books_id INT NOT NULL
+);
+\dt
+\;
+\l
+\c leo 
+\dt;
+\d books
+\q
+\l
+\dt
+\q
+\dt
+\d books
+\q
+\t
+\l
+\dt
+\l
+\c postgres 
+DROP DATABASE leo
+\l
+DROP DATABASE leo
+DROP SCHEMA leo
+\l
+CREATE DATABASE liblary_pha
+\;
+\l
+\q
+\l
+DROP DATABASE leo
+\l
+CREATE TABLE library-pha
+\l
+\c postgres
+DROP DATABASE leo
+\l
+DROP DATABASE leo;
+CREATE TABLE library-geek;
+\l
+DROP DATABASE leo;
+DROP DATABASE leo;
+\l
+CREATE TABLE library-geek;
+CREATE TABLE library_geek;
+\l
+CREATE DATABASE library_geek;
+\l
+DROP DATABASE postgres;
+\c library_geek 
+DROP DATABASE postgres;
+CREATE TABLE Books (
+id SERIAL NOT NULL,
+ title VARCHAR(20) PRIMARY KEY,
+ authoer VARCHAR(20),
+description VARCHAR(225),
+thumbnail VARCHAR(225),
+created_at TIMESTAMP,
+updated_at TIMESTAMP
+);
+CREATE TABLE TagMaps (
+id SERIAL NOT NULL,
+books_id SERIAL NOT NULL,
+tags_id SERIAL NOT NULL
+);
+CREATE TABLE Tags (
+id SERIAL NOT NULL,
+tag_name VARCHAR(20) PRIMARY KEY,
+user_id NOT NULL,
+created_at TIMESTAMP,
+updated_at TIMESTAMP
+);
+\dt
+CREATE TABLE Tags (
+id SERIAL NOT NULL,
+tag_name VARCHAR(20) PRIMARY KEY,
+user_id INT NOT NULL,
+created_at TIMESTAMP,
+updated_at TIMESTAMP
+);
+CREATE TABLE Histories (
+id SERIAL NOT NULL,
+user_lend_id INT NOT NULL,
+user_borrow_id INT NOT NULL,
+books_id INT NOT NULL,
+created_at TIMESTAMP,
+updated_at TIMESTAMP
+);
+CREATE TABLE Users (
+id SERIAL NOT NULL,
+email VARCHAR(45) PRIMARY KEY,
+password VARCHAR(45) NOT NULL,
+name VARCHAR(20) NOT NULL,
+thumnail_img TEXT NOT NULL,
+created_at TIMESTAMP,
+updated_at TIMESTAMP
+);
+CREATE TABLE BookOwnerMaps (
+id SERIAL NOT NULL,
+user_id SERIAL NOT NULL,
+books_id SERIAL NOT NULL
+);
+CREATE TABLE BooksToUsers (
+id SERIAL NOT NULL,
+user_lend_id INT NOT NULL,
+user_borrow_id INT NOT NULL,
+books_id INT NOT NULL,
+created_at TIMESTAMP,
+updated_at TIMESTAMP
+);
+;
+\dt
+DROP TABLE bookstousers 
+;
+\dt
+CREATE TABLE LendingAndBorrowing (
+id SERIAL NOT NULL,
+user_lend_id INT NOT NULL,
+user_borrow_id INT NOT NULL,
+books_id INT NOT NULL,
+created_at TIMESTAMP,
+updated_at TIMESTAMP
+);
+\dt
+ALTER TABLE users DROP (
+    thumnail_img
+);
+ALTER TABLE users DLOP thumnail_img;
+ALTER TABLE users DROP thumnail_img;
+\dt
+\d users
+\d users
+ALTER TABLE users ADD thumnail_img TEXT;
+\d users
+INSERT INTO users(email, password, name)
+VALUES("gmail@gmail.com", pass, leo);
+INSERT INTO users(email, password, name)
+VALUES(gmail@gmail.com, pass, leo);
+INSERT INTO users(email, password, name)
+VALUES("gmail@gmail.com", "pass", "leo");
+\d
+\dt
+\d ueers
+\d users
+select * from users'
+;
+jjj
+\l
+\dt
+'
+;
+select * from users;
+INSERT INTO users (id, email, password, name, created_at, updated_at, thumnail_img)  VALUES (1, gmail@gmail.com, pass, leo, null, null, null)
+;
+INSERT INTO users (id, email, password, name, created_at, updated_at, thumnail_img)  VALUES (1, 'gmail@gmail.com', pass, leo, null, null, null)
+;
+INSERT INTO users (id, email, password, name, created_at, updated_at, thumnail_img)  VALUES (1, 'gmail@gmail.com', 'pass', 'leo', 'null', 'null', 'null')
+;
+INSERT INTO users (id, email, password, name, created_at, updated_at, thumnail_img)  VALUES (1, 'gmail@gmail.com', 'pass', 'leo', null, null, null)
+;
+select * from users;
+\l
+\ld
+\td
+\dr
+\dt
+SELECT books *
+;
+SELECT books *;
+SELECT * FROM book
+;
+SELECT * FROM boos
+;
+select * from books;
+insert into books (title,authoer,description,thumbnail,created_at,updated_at) values ('プロを目指す人のためのRuby入門',
+ '伊藤淳一',
+ 'Railsをやる前に、Rubyを知ろう。みなさんが「Rubyをちゃんと理解しているRailsプログラマ」になれるように、Rubyの基礎知識から実践的な開発テクニックまで、丁寧に解説します。',
+ 'http://books.google.com/books/content?id=orl2tAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api',
+ 2020-02-24,
+ null);
+insert into books (title,authoer,description,thumbnail,created_at,updated_at) values ('プロを目指す人のためのRuby入門',
+ '伊藤淳一',
+ 'Railsをやる前に、Rubyを知ろう。みなさんが「Rubyをちゃんと理解しているRailsプログラマ」になれるように、Rubyの基礎知識から実践的な開発テクニックまで、丁寧に解説します。',
+ 'http://books.google.com/books/content?id=orl2tAEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api',
+'2020-02-24',
+ null);
+select * from books;
+ALTER TABLE books DROP COLUMN authoer
+;
+select * from books;
+CREATE TABLE AuthoerMaps (
+id SERIAL NOT NULL,
+books_id SERIAL NOT NULL,
+authoer_name VARCHAR(20) NOT NULL
+);
+select * from books;
+alter table authoermaps alter column books_id INT;
+alter table authoermaps alter column books_id text;
+alter table authoermaps alter column int;;
+alter table authoermaps alter column int;
+alter table authoermaps alter column int;
+alter table authoermaps alter column int ;
+alter table authoermaps alter column int;
+alter table authoermaps alter column smallint;
+alter table authoermaps alter column VARCHAR(200)
+;
+\d authoermaps
+insert into authoermaps (books_id,author_name) values (1,'伊藤淳一');
+insert into authoermaps (books_id,authoer_name) values (1,'伊藤淳一');
+\d authoermaps
+select * from authoermaps
+'
+'
+;
+insert into books (title,
+description,
+thumbnail,
+created_at,
+null) values (
+'ゼロからわかるRuby超入門',
+'プログラミングがわかる・書ける・体験できる。この1冊でRubyをしっかりマスターしよう!',
+'http://books.google.com/books/content?id=sDmuvgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api',
+select * from authoermaps
+'
+'
+;
+;
+insert into books
+(title,
+description,
+thumbnail,
+created_at,
+updated_at)
+values
+('ゼロからわかるRuby超入門','プログラミングがわかる・書ける・体験できる。この1冊でRubyをしっかりマスターしよう!','http://books.google.com/books/content?id=sDmuvgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api','2020-02-24',null);
+;
+\
+
+insert into books
+(title,
+description,
+thumbnail,
+created_at,
+updated_at)
+values
+('ゼロからわかるRuby超入門','プログラミングがわかる・書ける・体験できる。この1冊でRubyをしっかりマスターしよう!','http://books.google.com/books/content?id=sDmuvgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api','2020-02-24',null);
+;
+\d books
+select * from books;
+select * from books;
+\dt
+\d books
+select * from books;
+SELECT * FROM books;
+SELECT * FROM library_geek.books;
+\dt
+\l
+\dt
+q
+\q
+ls
+\dt
+\d books
+select * from books
+;
+select * from books;
+select * from books;
+insert into books values (2,'ゼロからわかるRuby超入門','プログラミングがわかる・書ける・体験できる。この1冊でRubyをしっかりマスターしよう!','http://books.google.com/books/content?id=sDmuvgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api','2020-02-24',null);
+\d books
+select * from books;
+select * from authoermaps;
+insert into authoermaps values (2,2,'五十嵐邦明');
+insert into authoermaps values (2,2,'松岡浩平');
+select * from authoermaps;
+alter table authoermaps alter id 3;
+update authoermaps set id=3 where authoer_name='松岡浩平';
+select * from authoermaps;
+\i Desktop/books.sql;
+alter table books alter column tatle text;
+alter table books alter column tatle text;
+alter table books alter column tatle TEXT;
+alter table books alter column title TEXT;
+alter table books alter column title  VARCHAR(225);
+alter table books alter column "title" text;
+alter table books alter column "title" text';
+alter table books alter column "title" 'text';
+\q
+\i /Users/leo/Desktop/books.sql 
+\d authoermaps
+select * from authoermaps
+;
+select * from authoermaps
+;
+select * from authoermaps
+;
+select * from authoermaps
+;
+select * from authoermaps
+;
+select * from authoermaps
+;
+select * from authoermaps
+;
+\d usrs
+\;
+\;
+\l
+\dt
+\d useras
+\d users
+select * from users
+;
+\dt
+\dt 
+\d users
+ \d user
+\d uers
+alter table thumnail_img rename thumbnail_img
+;
+alter table thumnail_img rename to thumbnail_img
+;
+ALTER TABLE tbl_name
+; CHANGE [COLUMN] old_col_name new_col_name column_definition
+;
+alter table users change thumnail_img thumbnail_img text;
+alter table users change thumnail_img thumbnail_img text;
+ALTER TABLE users CHANGE COLUMN thumnail_img thumbnail text;
+ALTER TABLE users alter COLUMN thumnail_img thumbnail text;
+ALTER TABLE users drop clumn thumnail_img;
+ALTER TABLE users drop column thumnail_img;
+\d users
+alter table users add column thumbnail text;
+ls
+\d users
+alter table users alter column created_at set default current_timestamp
+;
+alter table users alter column created_at set default current_timestamp
+;
+\d users
+\l
+\dt
+\dt lendingandborrowing 
+\d lendingandborrowing
+\d histories
+drop table lendingandborrowing 
+;
+\d users
+select * from users
+;
+select * from users
+;
+select * from users
+;
+select * from users
+;
+\dt
+\d books
+select * authoermaps
+;
+select * from authoermaps
+;
+\q
+select * from users;
+select * from users;
+\d users
+delete from uses where email=reonarudo11919273@gmail.com;
+delete from uses where id = 1;
+delete from users where id = 1;
+delete from users where id = 2;
+\d users
+select * from users
+;
+\dt users
+\dt
+\d users
+select * from users
+;
+select * from users
+;
+delete from users where id = 4;
+select * from users;
+select * from users;
+select * from users;
+\d uers
+\d users
+select * from users
+;
+\d users
+alter index set id
+;
+alter table users alter index id
+;
+\?
+\? '
+\? l
+alter index rename to id;
+alter table users alter index rename to id
+;
+\di
+select users, indexname from users_pkey
+;
+select * from pg_indexes where indexname = 'users_key';
+\d users_key
+\dt
+\d
+select * from users;
+\d users
+alter table users alter column id serial;
+alter table users alter column id type serial;
+select * from users
+;
+select * from users
+;
+select * from users
+;
+\d users
+\d authoermaps
+ALTER TABLE authoermaps RENAME COLUMN books_id TO book_id;
+\d authoermaps
+ALTER TABLE tbl_name
+ RENAME COLUMN old_col_name TO new_col_name
+;
+ALTER TABLE authoermaps RENAME COLUMN authoer_name TO name;
+\d authoermaps;
+select * from authoermaps
+;
+\q
+\d books
+select * from books
+l
+;
+select * from books;
+\d books
+select * from books;
+select * from books;
+select * from books;
+delete from books where title=="";
+delete from books where description=nil;
+delete from books where title == '';
+delete from books where description is nil;
+\d books
+select * from books
+l
+;
+select * from books where title is null
+;
+select * from books where description is null;
+delete * from books where description is null;
+delete from books where description is null;
+select * from books
+;
+\dt
+\d books
+\d
+ALTER TABLE books ADD PRIMARY KEY id;
+select * from bools;
+select * from books;
+;
+alter table books add column isbn;
+alter table books add column isbn text;
+\dt
+\d books
+select * from books;
+select * from books;
+select * from books;
+delete from books where id = 6
+;
+delete from books where id = 6
+;
+\d books
+\d books
+delete from books where id = 6
+; \dt
+\l
+\c lib_geek2 
+\dt
+\i /Users/leo/Workspace/code_base/geeoki_library/sqls/create_table.sql 
+\dt
+CREATE TABLE Books
+(
+  id SERIAL NOT NULL,
+  title VARCHAR(225),
+  authoer VARCHAR(225),
+  description VARCHAR(225),
+  thumbnail VARCHAR(225),
+  isbn text,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP,
+);
+CREATE TABLE Books
+(
+  id SERIAL NOT NULL,
+  title VARCHAR(225),
+  authoer VARCHAR(225),
+  description VARCHAR(225),
+  thumbnail VARCHAR(225),
+  isbn text,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP
+);
+show tables
+;
+\dt
+drop table authoermaps ;
+CREATE TABLE AuthoerMaps
+(
+  id SERIAL NOT NULL,
+  books_id INT NOT NULL,
+  name VARCHAR(20) NOT NULL
+);
+select * from books;
+delete from books where id = 6
+;
+select * from books;
+delete from books where id = 6
+;
+select * from books;
+dt
+;
+\dr
+\dt
+select * from books
+;
+delete from books where id = 2;
+delete from books where id = 2;
+select * from books
+;
+delete from books where id = 3;
+select * from books
+;
+select * from books
+;
+delete from 
+;
+select * from books
+;
+delete from books limit 4
+;
+delete from books where id = 1;
+select * from books
+;
+delete from books where id = 6;
+delete from books where id = 4;
+delete from books where id = 5;
+select * from books
+;
+alter table drop column autoer;
+alter table books drop column autoer;
+alter table books drop column authoer;
+select * from books
+;
+\dt books
+\d books
+alter table books alter column description type text;
+select * from books
+;
+select * form books
+;
+select from books
+;
+select * from books;
+select * from books;
+tmux kill-pane
+;
+\d
+\dt
+select * from authoermaps
+;
+select * from authoermaps
+;
+\c
+\c lib_geek2 
+select * from authoermaps
+;
+select * from authoermaps
+;
+drop table Histories;
+CREATE TABLE Histories
+(
+  id SERIAL NOT NULL,
+  user_lend_id INT NOT NULL,
+  user_borrow_id INT NOT NULL,
+  book_id INT NOT NULL,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP
+);
+alter table authoermaps rename authoer_name to name
+;
+alter table histories add status
+;
+alter table histories add status text;
+\d histories
+alter table histories add deadline timestamp;;
+\d histry
+\d history
+\d histories
+select * from tagmaps
+;
+alter table histories rename column user_lend_id to user_owner_id;
+\dt
+select * from histories
+;
+\d histories
+alter table histories alter COLUMN status type int;
+alter table histories alter COLUMN status type integer;
+\d histories
+USING status::integer
+；
+;
+USING status::integer;
+alter table histories alter COLUMN status type integer;
+alter table histories alter COLUMN status type int;
+alter table histories alter COLUMN status type int using code::integer;
+alter table histories alter COLUMN status type int using status::integer;
+\d histories
+select * from histories
+;
+select * from histories
+;
+select * from histories
+;
+update histories 
+set status = 1
+where id = 1
+;
+select * from histories
+;
+select * from histories
+;
+delete from histories where id = 2
+;
+delete from histories where id = 5
+;
+select * from histories
+;
+select * from histories
+;
+alter table histories rename column status to status_id; 
+select * from histories
+;
+select * from histories
+;
+select * from histories
+;
+select * from histories
+;
+select * from histories
+;
+select * from histories
+;
+select * from histories
+;
+select * from histories
+;
+select * from histories
+;
+select * from histories
+;
+select * from histories
+;
+select * from books
+;
+
+;
+select * from books
+;
+select id from books
+;
+select id from books
+;
+select id, name from books
+;
+\d books
+select id, title from books
+;
+select * from books
+;
+delete from books where id =21
+;
+select * from books
+;
+delete from books where id = 13;
+delete from bookownermaps where id=1;
+delete from bookownermaps where id=2;
+select from users;
+select * from users;
+select * from bookownermaps
+;
+select * from bookownermaps
+;
+select * from bookownermaps
+;
+select from bookownermap
+;
+select * from boookownermap
+where be_public
+is ;
+select * from bookownermaps where be_public = true
+;
+delete from booko
+;
+delete from bookownermaps where id = 13
+;
+delete from bookownermaps where book_id = 13
+;
+select * from bookownermaps where be_public = true
+;
+\dt
+\d statuses
+select * from histories
+;
+select * from histories inner join statuses on status_id = id;
+select * from histories inner join statuses on status_id = statuses.id;
+select * from histories left outer join statuses on status_id = statuses.id;
+select * from histories right outer join statuses on status_id = statuses.id;
+
+select * from histories right outer join statuses on status_id = statuses.id;
+select * from histories right outer join statuses on status_id = statuses.id;
+select * from histories right outer join statuses on status_id = statuses.id;
+select * from histories right outer join statuses on status_id = statuses.id;
+select * from tagmaps right outer join tags on tagmaps.tag_id = tags.id
+;
+select * from tagmaps right outer join tags on tagmaps.tag_id = tags.id
+;
+select * from tagmaps right outer join tags on tagmaps.tag_id = tags.id
+;
+select * from tagmaps right outer join tags on tagmaps.tag_id = tags.id
+;
+select * from tagmaps right outer join tags on tagmaps.tag_id = tags.id
+;
+select * from tagmaps left outer join tags on tagmaps.tag_id = tags.id
+;
+select * from tagmaps left outer join tags on tagmaps.tag_id = tags.id
+;
+\dt
+delete from tagmaps where id =1;
+delete from tagmaps where id =2;
+delete from tagmaps where id =3;
+delete from tagmaps where id =4;
+delete from tagmaps where id =10;
+delete from tagmaps where id =9;
+\l
+user
+;
+\d user
+\s users

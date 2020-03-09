@@ -21,9 +21,9 @@ before do
   @message = session.delete :notice
 end
 
-not_found do
-  erb :not_found
-end
+# not_found do
+#   erb :not_found
+# end
 
 helpers do
   def h(text)
@@ -72,8 +72,15 @@ post '/signup' do
   @password = h(params[:password])
   @user_name = h(params[:name])
 
-  User.create(email: @email, password: @password, name: @user_name)
-  redirect '/login'
+  user = User.new(email: @email, password: @password, name: @user_name)
+  binding.pry
+  if user.save
+    binding.pry
+    redirect '/login'
+    
+  else
+    binding.pry
+  end
 end
 
 # マイページページ
