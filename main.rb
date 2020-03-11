@@ -1,10 +1,20 @@
 # frozen_string_literal: true
-require 'rubygems'
-require 'bundler'
-require 'bundler/setup'
-Bundler.require
+# require 'rubygems'
+# require 'bundler'
+# require 'bundler/setup'
+# Bundler.require
 
-
+require 'sinatra'
+require 'sinatra/reloader'
+require 'sinatra/cookies'
+require 'active_record'
+require 'pry'
+require 'pg'
+require 'erb'
+require 'net/http'
+require 'uri'
+require 'json'
+require 'gmail'
 require './class'
 require './function'
 
@@ -32,7 +42,7 @@ end
 
 # トップページ
 get '/' do
-  # redirect '/login'
+  redirect '/login'
 end
 
 # ログインページ
@@ -71,9 +81,7 @@ post '/signup' do
   @user_name = h(params[:name])
 
   user = User.new(email: @email, password: @password, name: @user_name)
-  binding.pry
   if user.save
-    binding.pry
     redirect '/login'
     
   else
@@ -89,12 +97,13 @@ get '/mypage' do
   # 多対多の関係をhas_thoroughで表現
   @user = User.find(session[:id])
   @my_books = @user.books
+  # @authoers = Book.include(:authoer_maps)
   @authoers = Authoermap.all
 
   @all_books = Book.all
 
     # history関連
-  @book_borrowed_logs = History.where(user_borrow_id: session[:id]).where.not(status_id: 3).where.not(status: 0) #status_id 1 -> 本を貸し借り処理済み
+  @book_borrowed_logs = History.where(user_borrow_id: session[:id]).where.not(status_id: 3).where.not(status_id: 0) #status_id 1 -> 本を貸し借り処理済み
   @book_lending_logs = History.where(user_owner_id: session[:id]).where.not(status_id: 3).where.not(status_id: 0) #status_id 1 -> 本を貸し借り処理済み
   @request_logs = History.where(user_owner_id: session[:id]).where(status_id: 0) #status_id 0 -> リクエスト承認待ち
   return erb :mypage
@@ -156,10 +165,11 @@ get '/books' do
   selected_bookownermaps = Bookownermap.where(be_public: true).to_a
   book_ids = selected_bookownermaps.map{ |selected_bookownermap|
     selected_bookownermap.book_id
-    }
+  }
   @books = book_ids.uniq.map{|book_id|
     Book.find(book_id)
   }
+  # @authoers = Book.includes(:authoermap)
   @authoers = Authoermap.all
   return erb :books
 end
@@ -171,10 +181,10 @@ end
 
 post '/books/new' do
   redirect '/' unless session[:id]
-  begin
+    # begin
     user_id = session[:id]
     isbn = h(params[:isbn])
-    book_info = h(get_book_info(isbn))
+    book_info = get_book_info(isbn)
     if Book.find_by(isbn: isbn)
       book_already_exists = Book.find_by(isbn: isbn)
       Bookownermap.create(user_id: user_id, book_id: book_already_exists.id)
@@ -206,9 +216,9 @@ post '/books/new' do
       end
     end
     redirect '/books'
-  rescue
-    redirect '/books/manual'
-  end
+  # rescue
+  #   redirect '/books/manual'
+  # end
 end
 
 get '/books/manual' do
@@ -258,16 +268,18 @@ end
 
 post '/books/request' do
   user_borrow_id = session[:id]
-  book_id = params[:book_id]
+  user_owner_id = params[:user_owner_id].to_i
+  book_id = params[:book_id].to_i
+  # 本の持ち主を絞り込む
   owner_maps = Bookownermap.where(book_id: book_id)
-  owner_maps.each do |owner_map|
-    History.create(
-      user_owner_id: owner_map.user_id,
-      user_borrow_id: user_borrow_id,
-      book_id: book_id,
-      status_id: 0
-    )
-  end
+  History.create(
+    user_owner_id: user_owner_id,
+    user_borrow_id: user_borrow_id,
+    book_id: book_id,
+    status_id: 0
+  )
+  binding.pry
+  send_notify(user_owner_id, book_id)
   session[:notice] = {color: "teal darken-2", message: "リクエストを送信しました", icon: "done"}
   redirect '/books'
 end
@@ -291,6 +303,7 @@ get '/search' do
 
   @search_type = "キーワード検索"
   @search_element = params[:keyword]
+  # @authoers = Book.include(:authoer_maps)
   @authoers = Authoermap.all
   erb :serch
 end
@@ -301,6 +314,6 @@ get '/search/tags/:tagid' do
   @searched_books = Book.joins(:bookownermaps).joins(:tagmaps).select("books.id, books.title, books.thumbnail").where('tagmaps.tag_id = ?', "#{tag_id}")
   @search_type = "タグ"
   @search_element = Tag.find(tag_id).tag_name
-  @authoers = Authoermap.all
+  @authoers = Book.include(:authoer_maps)
   erb :serch
 end

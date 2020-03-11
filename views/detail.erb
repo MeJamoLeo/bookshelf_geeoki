@@ -31,14 +31,17 @@
         <div class="info-owner row">
           <form action="/books/request" method="post" style="padding:1.5rem">
             <div class="input-field col s12 m6">
-              <select>
+              <select name="user_owner_id" >
                 <option value="" disabled selected>Choose owner</option>
                 <% @users.each do |user|%>
-                <option value="1"><%= user.name%></option>
+                  <option value=<%= user.id %> id="">
+                    <%= user.name %>
+                  </option>
                 <% end%>
               </select>
             </div>
 
+            <%# sendボタンに本のid をhiddenで持たしている %>
             <div class="col s12 m6 book-status">
               <div class="right-align">
                 <input type="hidden" name="book_id" id="book_id" value=<%=

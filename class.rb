@@ -32,6 +32,8 @@ class Book < ActiveRecord::Base
 
   has_many :histories
   has_many :statuses, through: :histories
+
+  has_many :authoermaps
 end
 
 class Tagmap < ActiveRecord::Base
