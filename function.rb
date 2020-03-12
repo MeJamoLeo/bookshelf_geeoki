@@ -69,7 +69,6 @@ gmail = Gmail.new( ENV['USER_NAME'],  ENV['USER_PASS'])
         body email_body
       end
     end
-    binding.pry
   gmail.deliver(message)
   gmail.logout
 end

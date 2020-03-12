@@ -83,7 +83,6 @@ post '/signup' do
   user = User.new(email: @email, password: @password, name: @user_name)
   if user.save
     redirect '/login'
-    
   else
     session[:notice] = {color: "yellow darken-1", message:"そのメールアドレスはすでに使用されています", icon: "error"}
     redirect '/signup'
@@ -267,18 +266,28 @@ get '/books/:id' do
 end
 
 post '/books/request' do
+  book_id = params[:book_id].to_i
   user_borrow_id = session[:id]
   user_owner_id = params[:user_owner_id].to_i
-  book_id = params[:book_id].to_i
+  deadline = params[:deadline]
+  binding.pry
+  if user_owner_id == 0
+    session[:notice] = {color: "light-blue darken-2", message: "持ち主を選択してください"}
+    redirect "books/#{book_id}"
+  end
+  if user_borrow_id == user_owner_id
+    session[:notice] = {color: "light-blue darken-2", message: "他の持ち主を選択してください"}
+    redirect "books/#{book_id}"
+  end
   # 本の持ち主を絞り込む
   owner_maps = Bookownermap.where(book_id: book_id)
   History.create(
     user_owner_id: user_owner_id,
     user_borrow_id: user_borrow_id,
     book_id: book_id,
-    status_id: 0
+    status_id: 0,
+    deadline: deadline
   )
-  binding.pry
   send_notify(user_owner_id, book_id)
   session[:notice] = {color: "teal darken-2", message: "リクエストを送信しました", icon: "done"}
   redirect '/books'

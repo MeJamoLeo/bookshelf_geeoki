@@ -1,38 +1,43 @@
-
 <div class="container">
   <div class="book-info">
     <div class="row" style="position: relative;">
+      <%# 本の作サムネイル %>
       <div class="col l2 offset-l1 m3 s12 info-img">
-      <% if @book.thumbnail%>
-        <img class="activator" src="<%= @book.thumbnail %>" width="200"　/>
-      <%else%>
-        <img class="activator" src="/images/no_image.webp"/>
-      <%end%>
+        <% if @book.thumbnail%>
+          <img class="activator" src="<%= @book.thumbnail %>" width="200"　/>
+        <%else%>
+          <img class="activator" src="/images/no_image.webp"/>
+        <%end%>
       </div>
-      <div class="col l6 offset-l1 m6 offset-m1 s12 info-text">
-        <h2 style="font-size:3rem;"><%= @book.title %></h2>
-        <% @authoers.each do |authoer| %>
-        <a style="font-size: 1.5rem;">
-          <%= authoer.name %>
-        </a>
-        <% end %>
-        <p><%= @book.description %></p>
 
+      <div class="col l6 offset-l1 m6 offset-m1 s12 info-text">
+        <%# 本のタイトル %>
+        <h2 style="font-size:3rem;"><%= @book.title %></h2>
+        <%# 本の作者 %>
+        <% @authoers.each do |authoer| %>
+          <a style="font-size: 1.5rem;">
+            <%= authoer.name %>
+          </a>
+        <% end %>
+        <%# 本の説明 %>
+        <p><%= h(@book.description) %></p>
         <%# タグをパーツとして使いたい %>
         <div class="card-tags" style="font-size: 2rem;">
           <% @book.tags.each do |tag| %>
-          <a href="/search/tags/<%= tag.id %>" style="position: relative;">
-            <div class="chip" style="">
-              <%= tag.tag_name %>
-            </div>
-          </a>
+            <a href="/search/tags/<%= tag.id %>" style="position: relative;">
+              <div class="chip" style="">
+                <%= tag.tag_name %>
+              </div>
+            </a>
           <% end %>
         </div>
-        <div class="info-owner row">
+
+        <%# 今回作りたい部分 ----------------------------------------------------%>
+        <div class="row">
           <form action="/books/request" method="post" style="padding:1.5rem">
-            <div class="input-field col s12 m6">
+            <div class="input-field col s12 m4">
               <select name="user_owner_id" >
-                <option value="" disabled selected>Choose owner</option>
+                <option value="" disabled selected>持ち主を指定</option>
                 <% @users.each do |user|%>
                   <option value=<%= user.id %> id="">
                     <%= user.name %>
@@ -40,9 +45,13 @@
                 <% end%>
               </select>
             </div>
+            <div class="input-field col s12 m5 offset-m1" style="margin-top: 1.0rem;" required>
+              <input id="deadline" name="deadline" type="text" class="datepicker">
+              <label class="active black-text" for="deadline">返却日を指定</label>
+            </div>
 
             <%# sendボタンに本のid をhiddenで持たしている %>
-            <div class="col s12 m6 book-status">
+            <div class="col s12 book-status">
               <div class="right-align">
                 <input type="hidden" name="book_id" id="book_id" value=<%=
                 @book.id %>>
@@ -57,7 +66,9 @@
               </div>
             </div>
           </form>
+          </div>
         </div>
+        <%# 今回作りたい部分 ----------------------------------------------------%>
       </div>
     </div>
   </div>
