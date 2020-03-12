@@ -78,6 +78,13 @@
   <script type="text/javascript" src="/js/qrcodelib.js"></script>
   <script type="text/javascript" src="/js/webcodecamjs.js"></script>
   <script type="text/javascript" src="/js/main.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <!-- ---------------------------------------------------- -->
+  <script type="text/javascript">
+  var txt = "innerText" in HTMLElement.prototype ? "innerText" : "textContent";
+  var arg = {
+    resultFunction: function (result) {
+      document.getElementById('scanned-QR').value = result.code;
+    }
+  };
+  new WebCodeCamJS("canvas").init(arg).play();
+</script>

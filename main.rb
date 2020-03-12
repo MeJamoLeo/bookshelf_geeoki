@@ -174,7 +174,7 @@ get '/books' do
   return erb :books
 end
 
-get '/books/new' do
+get '/books_new' do
   redirect '/' unless session[:id]
   erb :add_book
 end
