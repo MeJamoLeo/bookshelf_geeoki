@@ -270,7 +270,6 @@ post '/books/request' do
   user_borrow_id = session[:id]
   user_owner_id = params[:user_owner_id].to_i
   deadline = params[:deadline]
-  binding.pry
   if user_owner_id == 0
     session[:notice] = {color: "light-blue darken-2", message: "持ち主を選択してください"}
     redirect "books/#{book_id}"
