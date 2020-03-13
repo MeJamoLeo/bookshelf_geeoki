@@ -1,25 +1,88 @@
+<!-- webcode_reader ---------------------------------------------------- -->
 <div class="container">
-<form action="/books/new" method="post">
-  <label for="isbn">isbn バーコードの下に書いてある13桁の番号</label>
-  <input type="number" name="isbn" id="isbn" />
-  <label for="new_tags">新規タグ登録　（カンマで区切ってください）</label>
-  <input type="text" name="new_tags" id="new_tags" />
-  <br><br>
-  <% Tag.all.each do |tag|%>
-    <div class="chip" style="margin-right: 1rem;">
-      <label class="">
-        <input class="filled-in" type="checkbox" name="existing_id[]" id="" value="<%= tag.id%>">
-        <span class="blue-grey-text text-darken-1"><%= tag.tag_name%></span>
-      </label>
+  <div class="row">
+    <!-- <div class="col m-3{">
+      <span id="scanned-TYPE">CODE TYPE</span> 
+      <textarea rows="3" id="scanned-QR"></textarea> 
+    </div> -->
+    <div class="col m6">
+      <canvas width="640" height="480" id="webcodecam-canvas"></canvas>
+      <div class="scanner-laser laser-rightBottom" style="opacity:0.5;"></div>
+      <div class="scanner-laser laser-rightTop" style="opacity:0.5;"></div>
+      <div class="scanner-laser laser-leftBottom" style="opacity:0.5;"></div>
+      <div class="scanner-laser laser-leftTop" style="opacity:0.5;"></div>
+      <select id="camera-select" class="form-control"></select>
+      <div class="btn-group" style="display: none;" role="group">
+        <button class="btn btn-default" type="button" id="play">play</button>
+        <button class="btn btn-default" type="button" id="pause"><strong>pause</strong></button>
+        <button class="btn btn-default" type="button" id="stop"><strong>stop</strong><br></button>
+      </div>
     </div>
-  <% end %>
-  <br>
-  <br>
+    <div class="col m6">
+      <form action="/books/new" method="post">
+        <label for="isbn">isbn バーコードの下に書いてある13桁の番号</label>
+        <input type="number" name="isbn" id="scanned-QR" />
+        <label for="new_tags">新規タグ登録　（カンマで区切ってください）</label>
+        <input type="text" name="new_tags" id="new_tags" />
+        <br><br>
+        <% Tag.all.each do |tag|%>
+          <div class="chip" style="margin-right: 1rem;">
+            <label class="">
+              <input class="filled-in" type="checkbox" name="existing_id[]" id="" value="<%= tag.id%>">
+              <span class="blue-grey-text text-darken-1"><%= tag.tag_name%></span>
+            </label>
+          </div>
+        <% end %>
+        <br>
+        <br>
 
-  <div class="right-align" style="width: auto;">
-  <button class="btn waves-effect waves-light" type="submit" name="action">Submit
-    <i class="material-icons right">send</i>
-  </button>
+        <div class="right-align" style="width: auto;">
+        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+          <i class="material-icons right">send</i>
+        </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- <div class="col m6">
+      <span class="label label-default" id="zoom-value">倍率 : 2</span>
+      <input type="range" min="10" max="50" value="0" id="zoom" onchange="Page.changeZoom();" />
+      <span class="label label-default" id="brightness-value">明るさ : 20</span>
+      <input type="range" value="20" min="0" max="128" id="brightness" onchange="Page.changeBrightness();" />
+      <span class="label label-default" id="contrast-value">コントラスト : 0</span>
+      <input type="range" value="0" min="0" max="64" id="contrast" onchange="Page.changeContrast();" />
+      <span class="label label-default" id="threshold-value">2値化 : 0</span>
+      <input type="range" value="0" min="0" max="512" id="threshold" onchange="Page.changeThreshold();" />
+      <span class="label label-default" id="sharpness-value">鋭化 : off</span>
+      <input type="checkbox" id="sharpness" onchange="Page.changeSharpness();" />
+      <span class="label label-default" id="grayscale-value">白黒 : off</span>
+      <input type="checkbox" id="grayscale" onchange="Page.changeGrayscale();" />
+      <span class="label label-default" id="flipVertical-value">垂直反転 : off</span>
+      <input type="checkbox" id="flipVertical" onchange="Page.changeVertical();" />
+      <span class="label label-default" id="flipHorizontal-value">水平反転: off</span>
+      <input type="checkbox" id="flipHorizontal" onchange="Page.changeHorizontal();" />
+    </div> -->
   </div>
-</form>
 </div>
+
+<div>
+  <button id="decode-img"></button>
+  <button id="grab-img"></button>
+</div>
+<!-- ---------------------------------------------------- -->
+<div class="container">
+</div>
+  <!-- webcode_scripts ---------------------------------------------------- -->
+  <script type="text/javascript" src="/js/qrcodelib.js"></script>
+  <script type="text/javascript" src="/js/webcodecamjs.js"></script>
+  <script type="text/javascript" src="/js/main.js"></script>
+  <!-- ---------------------------------------------------- -->
+  <script type="text/javascript">
+  var txt = "innerText" in HTMLElement.prototype ? "innerText" : "textContent";
+  var arg = {
+    resultFunction: function (result) {
+      document.getElementById('scanned-QR').value = result.code;
+    }
+  };
+  new WebCodeCamJS("canvas").init(arg).play();
+</script>
