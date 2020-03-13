@@ -1,21 +1,25 @@
 # frozen_string_literal: true
-require "bundler/setup"
+require 'bundler/setup'
 Bundler.require
 
 # require 'sinatra'
 # require 'sinatra/reloader'
 # require 'sinatra/cookies'
-# require 'active_record'
+require 'active_record'
 # require 'pry'
 # require 'pg'
 # require 'erb'
+# require 'gmail'
 require 'net/http'
 require 'uri'
 require 'json'
-# require 'gmail'
 require 'date'
-require './class'
 require './function'
+require './class'
+
+
+
+
 
 enable :sessions
 

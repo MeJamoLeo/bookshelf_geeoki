@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 ActiveRecord::Base.establish_connection(
   adapter: ENV['DB_ADAPTER'],
   database: ENV['DB_NAME'],

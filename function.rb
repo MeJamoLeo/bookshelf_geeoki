@@ -1,5 +1,4 @@
 
-require 'sinatra/reloader'
 def get_book_info(isbn)
 
 goole_books_url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'
