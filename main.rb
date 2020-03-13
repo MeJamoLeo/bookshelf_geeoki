@@ -93,18 +93,34 @@ end
 get '/mypage' do
   redirect '/' unless session[:id]
 
-  # 多対多の関係をhas_thoroughで表現
-  @user = User.find(session[:id])
-  @my_books = @user.books
-  # @authoers = Book.include(:authoer_maps)
-  @authoers = Authoermap.all
+  # # 多対多の関係をhas_thoroughで表現
+  # @user = User.find(session[:id])
+  # @my_books = @user.books
+  # # @authoers = Book.include(:authoer_maps)
+  # @authoers = Authoermap.all
 
-  @all_books = Book.all
+  # @all_books = Book.all
 
-    # history関連
-  @book_borrowed_logs = History.where(user_borrow_id: session[:id]).where.not(status_id: 3).where.not(status_id: 0) #status_id 1 -> 本を貸し借り処理済み
-  @book_lending_logs = History.where(user_owner_id: session[:id]).where.not(status_id: 3).where.not(status_id: 0) #status_id 1 -> 本を貸し借り処理済み
-  @request_logs = History.where(user_owner_id: session[:id]).where(status_id: 0) #status_id 0 -> リクエスト承認待ち
+  #   # history関連
+  # @book_borrowed_logs = History.where(user_borrow_id: session[:id]).where.not(status_id: 3).where.not(status_id: 0) #status_id 1 -> 本を貸し借り処理済み
+  # @book_lending_logs = History.where(user_owner_id: session[:id]).where.not(status_id: 3).where.not(status_id: 0) #status_id 1 -> 本を貸し借り処理済み
+  # @request_logs = History.where(user_owner_id: session[:id]).where(status_id: 0) #status_id 0 -> リクエスト承認待ち
+
+  #これをアクティブレコードで表現したい
+  ######################################################################
+  sql_for_active_histories = "
+  SELECT
+    books.id, books.title, books.thumbnail,
+	  users.id, users.name,
+	  histories.deadline, histories.status_id, histories.user_owner_id
+  FROM books
+  INNER JOIN histories ON books.id = histories.book_id
+  INNER JOIN users ON users.id = histories.user_borrow_id
+  WHERE NOT histories.status_id = 3;"
+  # active_histories = Book.find_by_sql(sql_for_active_histories);
+  #####################################################################
+  active_histories = Book.joins(:users).joins(:histories).select("books.*, users.*, histories.*").where.not(satus_id: 3)
+  binding.pry
   return erb :mypage
 end
 

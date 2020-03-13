@@ -15,7 +15,8 @@ class User < ActiveRecord::Base
   has_many :bookownermaps
   has_many :books, through: :bookownermaps
 
-  # has_many :histories
+  has_many :histories, foreign_key: :'user_borrow_id'
+  has_many :books, through: :histories
 end
 
 class Bookownermap < ActiveRecord::Base
@@ -26,6 +27,7 @@ end
 class Book < ActiveRecord::Base
   has_many :bookownermaps
   has_many :users, through: :bookownermaps
+  has_many :borrow_users, through: :histories, source: :user
 
   has_many :tagmaps
   has_many :tags, through: :tagmaps
@@ -53,7 +55,8 @@ end
 
 class History < ActiveRecord::Base
   belongs_to :book
-  belongs_to :status
+  has_many :statuses
+  belongs_to :user
 end
 
 class Status < ActiveRecord::Base
