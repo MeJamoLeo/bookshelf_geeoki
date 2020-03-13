@@ -7,12 +7,12 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 # gem "rails"
 
 gem 'sinatra'
-gem 'sinatra/reloader'
-gem 'sinatra/cookies'
-gem 'active_record'
-gem 'pry'
+gem 'activerecord'
 gem 'pg'
-gem 'erb'
-gem 'net/http'
-gem 'uri'
-gem 'json'
+# gem 'erb'
+gem 'gmail'
+
+group :development do
+  gem 'sinatra-contrib'
+  gem 'pry'
+end
