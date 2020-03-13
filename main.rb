@@ -14,6 +14,7 @@ require 'erb'
 require 'net/http'
 require 'uri'
 require 'json'
+require 'date'
 require 'gmail'
 require './class'
 require './function'
@@ -50,12 +51,21 @@ get '/login' do
   return erb :login, layout: :none
 end
 
-# ログイン
+# ログイtン
 post '/login' do
   user = User.find_by(password: params[:password])
   if user && User.find_by(email: params[:email])
     session[:id] = user[:id]
     session[:notice] = {color: "blue darken-4", message: "ログインしました", icon: "check_circle"}
+    # 返却日を過ぎている履歴を探す
+    active_histories = History.where(user_borrow_id: session[:id]).where(status_id: 1).select("deadline")
+    today = Time.now
+    active_histories.each{|history|
+      if today > history.deadline
+        session[:notice] = {color: "red", message: "返却期限が過ぎた本があります", icon: "priority_high"}
+        redirect '/books'
+      end
+    }
     redirect '/books'
   else
     session[:notice] = {color: "pink darken-4", message: "入力情報を確認してください", icon: "error"}
@@ -278,7 +288,6 @@ post '/books/request' do
     book_id: book_id,
     status_id: 0
   )
-  binding.pry
   send_notify(user_owner_id, book_id)
   session[:notice] = {color: "teal darken-2", message: "リクエストを送信しました", icon: "done"}
   redirect '/books'
